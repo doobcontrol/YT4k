@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YT4k", "YT4k\YT4k.csproj", "{1381AC9C-9272-406B-80B3-559CD6138D1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "refLib", "refLib", "{DA588859-4C04-4C7E-9E03-D84406AA4DF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DB15642C-7905-4160-9B5A-29B8F973D31F}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1381AC9C-9272-406B-80B3-559CD6138D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1381AC9C-9272-406B-80B3-559CD6138D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1381AC9C-9272-406B-80B3-559CD6138D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1381AC9C-9272-406B-80B3-559CD6138D1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9922AA33-99C3-417F-AD50-C17372BA2E23}
+	EndGlobalSection
+EndGlobal
