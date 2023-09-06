@@ -120,7 +120,7 @@ namespace YT4k
             {
                 return false;
             }
-            if (uStr.StartsWith("https://www.youtube.com/"))
+            if (uStr.StartsWith("https://www.youtube.com/watch?v="))
             {
                 if (!downloadingDic.ContainsKey(uStr))
                 {
@@ -147,15 +147,21 @@ namespace YT4k
             ytDownloderCt.ChunkDownloaded += UcYtDownloader_ChunkDownloaded;
             ytDownloderCt.VedioInfoGot += UcYtDownloader_VedioInfoGot;
 
+            string vUrl = uStr;
+            if (uStr.IndexOf('&') != -1)
+            {
+                vUrl = uStr.Split('&')[0];
+            }
+
             panelDownloaderContainer.Controls.Add(ytDownloderCt);
-            downloadingDic.Add(uStr, ytDownloderCt);
+            downloadingDic.Add(vUrl, ytDownloderCt);
 
             statusLabelMsg.Text = "任务已添加，总" + downloadingDic.Count + "项";
             Text = appTitle + downloadingDic.Count + "项任务";
 
-            log(LogTask.logType_info, "启动任务（" + downloadingDic.Count + "）：" + uStr, null);
+            log(LogTask.logType_info, "启动任务（" + downloadingDic.Count + "）：" + vUrl, null);
 
-            _ = ytDownloderCt.startAsync(uStr, savedFile, startBlock);
+            _ = ytDownloderCt.startAsync(vUrl, savedFile, startBlock);
         }
         private void startDownloadTaskAsync(string uStr)
         {
