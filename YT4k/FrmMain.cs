@@ -110,33 +110,39 @@ namespace YT4k
 
         private bool checkYoutubeUri(string uStr)
         {
-            if (uStr.IndexOf("\r") != -1
-                || uStr.IndexOf("\n") != -1
+            string vUrl = uStr;
+            if (uStr.IndexOf('&') != -1)
+            {
+                vUrl = uStr.Split('&')[0];
+            }
+
+            if (vUrl.IndexOf("\r") != -1
+                || vUrl.IndexOf("\n") != -1
                 )
             {
                 return false;
             }
-            if (!uStr.StartsWith("http"))
+            if (!vUrl.StartsWith("http"))
             {
                 return false;
             }
-            if (uStr.StartsWith("https://www.youtube.com/watch?v="))
+            if (vUrl.StartsWith("https://www.youtube.com/watch?v="))
             {
-                if (!downloadingDic.ContainsKey(uStr))
+                if (!downloadingDic.ContainsKey(vUrl))
                 {
                     return true;
                 }
                 else
                 {
-                    statusLabelMsg.Text = "重复地址:" + uStr;
-                    log(LogTask.logType_info, "重复地址:" + uStr, null);
+                    statusLabelMsg.Text = "重复地址:" + vUrl;
+                    log(LogTask.logType_info, "重复地址:" + vUrl, null);
                     return false;
                 }
             }
             else
             {
-                statusLabelMsg.Text = "非法地址:" + uStr;
-                log(LogTask.logType_info, "非法地址:" + uStr, null);
+                statusLabelMsg.Text = "非法地址:" + vUrl;
+                log(LogTask.logType_info, "非法地址:" + vUrl, null);
                 return false;
             }
         }
