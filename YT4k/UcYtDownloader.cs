@@ -15,6 +15,7 @@ using com.xiyuansoft.pub.log;
 using System.Net.Http;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using VideoLibrary.Exceptions;
 
 namespace YT4k
 {
@@ -107,7 +108,23 @@ namespace YT4k
 
             showMsg("读取视频信息……");
 
-            YouTubeVideo maxResolution = await getmaxResolutionVedio();
+            YouTubeVideo maxResolution;
+
+            try
+            {
+                maxResolution = await getmaxResolutionVedio();
+            }
+            catch (UnavailableStreamException e)
+            {
+                showMsg("视频无效：" + e.Message);
+                DownloadStoped(this, new DownloadStopedEventArgs()
+                {
+                    e = e,
+                    Success = false,
+                    Canceled = false
+                });
+                return;
+            }
 
             if (token.IsCancellationRequested)
             {
@@ -216,6 +233,10 @@ namespace YT4k
                     IEnumerable<YouTubeVideo> videoInfos = await youTube.GetAllVideosAsync(vedioUri);
                     YouTubeVideo nmaxResolution = videoInfos.First(i => i.Resolution == videoInfos.Max(j => j.Resolution));
                     maxResolution = nmaxResolution;
+                }
+                catch (UnavailableStreamException e)
+                {
+                    throw e;
                 }
                 catch (Exception e)
                 {
