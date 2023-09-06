@@ -236,7 +236,8 @@ namespace YT4k
                     + senderUcYtDownloader.FileSize + "）" + vedioName;
                     log(LogTask.logType_info, "任务已取消（"
                     + senderUcYtDownloader.TotalBytesCopied + "/"
-                    + senderUcYtDownloader.FileSize + "）" + vedioName, null);
+                    + senderUcYtDownloader.FileSize + "）" + vedioName + "\r\n"
+                    + senderUcYtDownloader.VedioUri, null);
 
                     deleteConfig = senderUcYtDownloader.DeleteConfig;
                 }
@@ -256,7 +257,8 @@ namespace YT4k
                     }
                     log(LogTask.logType_info, "下载失败（"
                     + senderUcYtDownloader.TotalBytesCopied + "/"
-                    + senderUcYtDownloader.FileSize + "）" + vedioName + " - " + eMsg, null);
+                    + senderUcYtDownloader.FileSize + "）" + vedioName + "\r\n"
+                    + senderUcYtDownloader.VedioUri + "\r\n - " + eMsg, null);
                 }
             }
 
