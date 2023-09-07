@@ -302,10 +302,18 @@ namespace YT4k
         {
             if (panelPogress.InvokeRequired)
             {
-                panelPogress.BeginInvoke(() => {
-                    showPogress(pmt, value);
-                }
+                try
+                {
+                    panelPogress.BeginInvoke(
+                        () => {
+                            showPogress(pmt, value);
+                        }
                     );
+                }
+                catch (InvalidOperationException e)
+                {
+                    //控件已删除，不处理
+                }
             }
             else
             {
