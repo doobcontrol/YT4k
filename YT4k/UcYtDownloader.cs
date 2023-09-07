@@ -139,6 +139,11 @@ namespace YT4k
 
             vedioName = maxResolution.FullName;
             vedioResolution = maxResolution.Resolution;
+
+            string showStr = "  VedioName：" + vedioName;
+            showStr += "\r\n  Resolution：" + vedioResolution;
+            showVedioInfo(showStr);
+
             await Task.Run(
                 async () => {
                     while (true)
@@ -164,10 +169,6 @@ namespace YT4k
             
             showPogress(pogressMsgType.show, _fileSize);
             showPogress(pogressMsgType.progress, startBlock * CustomYouTube.chunkSize);
-            
-            string showStr = "  VedioName：" + vedioName;
-            showStr += "\r\n  Resolution：" + vedioResolution;
-            showVedioInfo(showStr);
             
             showMsg("启动视频下载……");
             DownloadStopedEventArgs dsea = new DownloadStopedEventArgs
