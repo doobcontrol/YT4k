@@ -104,7 +104,7 @@ namespace YT4k
             tokenSource = new CancellationTokenSource();
             token = tokenSource.Token;
 
-            showPogress(pogressMsgType.show, 0);
+            //showPogress(pogressMsgType.show, 0);
 
             showMsg("读取视频信息……");
 
@@ -139,21 +139,36 @@ namespace YT4k
 
             vedioName = maxResolution.FullName;
             vedioResolution = maxResolution.Resolution;
-            _fileSize = (long)maxResolution.ContentLength;
-            saveFile = savedFile;
+            await Task.Run(
+                async () => {
+                    while (true)
+                    {
+                        long? cLength = maxResolution.ContentLength;
+                        if (cLength.HasValue)
+                        {
+                            _fileSize = cLength.Value;
+                            FrmMain.log(LogTask.logType_erro, "视频长度:"+ _fileSize, null);
+                            break;
+                        }
+                        showMsg("读取视频长度失败，重试……");
+                        FrmMain.log(LogTask.logType_erro, "读取视频长度失败，重试", null);
+                    }
+                });
+
+            saveFile = savedFile; 
             if (startBlock == 0)
             {
                 saveFile = System.Guid.NewGuid().ToString("N");//下载到临时文件，成功再拷贝  maxResolution.FullName;
                 VedioInfoGot(this, null);
             }
-
+            
             showPogress(pogressMsgType.show, _fileSize);
             showPogress(pogressMsgType.progress, startBlock);
-
+            
             string showStr = "  VedioName：" + vedioName;
             showStr += "\r\n  Resolution：" + vedioResolution;
             showVedioInfo(showStr);
-
+            
             showMsg("启动视频下载……");
             DownloadStopedEventArgs dsea = new DownloadStopedEventArgs
             {
@@ -580,7 +595,7 @@ namespace YT4k
             }
             return true;
         }
-        private async Task<long?> GetContentLengthAsync(string requestUri, bool ensureSuccess = true)
+        public async Task<long?> GetContentLengthAsync(string requestUri, bool ensureSuccess = true)
         {
             using (var request = new HttpRequestMessage(HttpMethod.Head, requestUri))
             {
