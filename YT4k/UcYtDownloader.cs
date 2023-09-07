@@ -298,8 +298,13 @@ namespace YT4k
             return retUri;
         }
 
+        public bool removed = false;
         private void showPogress(pogressMsgType pmt, long value)
         {
+            if (removed)
+            {
+                return;
+            }
             if (panelPogress.InvokeRequired)
             {
                 try

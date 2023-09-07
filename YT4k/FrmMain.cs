@@ -299,6 +299,7 @@ namespace YT4k
        
         private void removeDownloadTask(UcYtDownloader senderUcYtDownloader, string msg)
         {
+            senderUcYtDownloader.removed = true;
             if (this.InvokeRequired)
             {
                 this.BeginInvoke(
