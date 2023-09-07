@@ -104,7 +104,7 @@ namespace YT4k
             tokenSource = new CancellationTokenSource();
             token = tokenSource.Token;
 
-            showPogress(pogressMsgType.show, startBlock);
+            showPogress(pogressMsgType.show, 0);
 
             showMsg("读取视频信息……");
 
@@ -137,8 +137,6 @@ namespace YT4k
                 return;
             }
 
-            showPogress(pogressMsgType.show, (long)maxResolution.ContentLength);
-
             vedioName = maxResolution.FullName;
             vedioResolution = maxResolution.Resolution;
             _fileSize = (long)maxResolution.ContentLength;
@@ -148,6 +146,9 @@ namespace YT4k
                 saveFile = System.Guid.NewGuid().ToString("N");//下载到临时文件，成功再拷贝  maxResolution.FullName;
                 VedioInfoGot(this, null);
             }
+
+            showPogress(pogressMsgType.show, _fileSize);
+            showPogress(pogressMsgType.progress, startBlock);
 
             string showStr = "  VedioName：" + vedioName;
             showStr += "\r\n  Resolution：" + vedioResolution;
