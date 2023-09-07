@@ -104,7 +104,7 @@ namespace YT4k
             tokenSource = new CancellationTokenSource();
             token = tokenSource.Token;
 
-            showPogress(pogressMsgType.show, 0);
+            showPogress(pogressMsgType.show, startBlock);
 
             showMsg("读取视频信息……");
 
