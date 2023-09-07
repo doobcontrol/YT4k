@@ -152,7 +152,7 @@ namespace YT4k
 
             string showStr = "  VedioName：" + vedioName;
             showStr += "\r\n  Resolution：" + vedioResolution;
-            labelVedioInfo.Text = showStr;
+            showVedioInfo(showStr);
 
             showMsg("启动视频下载……");
             DownloadStopedEventArgs dsea = new DownloadStopedEventArgs
@@ -335,6 +335,20 @@ namespace YT4k
             else
             {
                 labelMsg.Text = msg;
+            }
+        }
+        private void showVedioInfo(string msg)
+        {
+            if (labelVedioInfo.InvokeRequired)
+            {
+                labelVedioInfo.BeginInvoke(() => {
+                    showVedioInfo(msg);
+                }
+                );
+            }
+            else
+            {
+                labelVedioInfo.Text = msg;
             }
         }
 
