@@ -163,7 +163,7 @@ namespace YT4k
             }
             
             showPogress(pogressMsgType.show, _fileSize);
-            showPogress(pogressMsgType.progress, startBlock);
+            showPogress(pogressMsgType.progress, startBlock * CustomYouTube.chunkSize);
             
             string showStr = "  VedioName：" + vedioName;
             showStr += "\r\n  Resolution：" + vedioResolution;
