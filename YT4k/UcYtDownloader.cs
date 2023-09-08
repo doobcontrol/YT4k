@@ -77,13 +77,12 @@ namespace YT4k
             this.BackColor = SystemColors.Control;
             this.BorderStyle= BorderStyle.FixedSingle;
 
-            panelPogress.Visible = false;
             labelPogress.DoubleClick += cancelDownload_DoubleClick;
 
             labelVedioUri.Text = "";
             labelMsg.Text = "";
             labelVedioInfo.Text = "";
-            labelPogress.Text = "";
+            labelPogress.Text = "双击取消下载";
 
             if (!Directory.Exists(Path.Combine(downloadDir, "temp")))
             {
@@ -126,14 +125,8 @@ namespace YT4k
                 return;
             }
 
-            if (token.IsCancellationRequested)
+            if (cancelDownloadBeforeCreateItem(startBlock != 0))
             {
-                showMsg("已取消下载");
-                DownloadStoped(this, new DownloadStopedEventArgs()
-                {
-                    Success = false,
-                    Canceled = true
-                });
                 return;
             }
 
@@ -146,7 +139,7 @@ namespace YT4k
 
             await Task.Run(
                 async () => {
-                    while (true)
+                    while (!token.IsCancellationRequested)
                     {
                         long? cLength = maxResolution.ContentLength;
                         if (cLength.HasValue)
@@ -159,6 +152,11 @@ namespace YT4k
                         FrmMain.log(LogTask.logType_erro, "读取视频长度失败，重试", null);
                     }
                 });
+
+            if (cancelDownloadBeforeCreateItem(startBlock != 0))
+            {
+                return;
+            }
 
             saveFile = savedFile; 
             if (startBlock == 0)
@@ -236,6 +234,21 @@ namespace YT4k
                        );
                 }
                 );
+        }
+        private bool cancelDownloadBeforeCreateItem(bool isBakedItem)
+        {
+            if (token.IsCancellationRequested)
+            {
+                showMsg("已取消下载"); 
+                deleteConfig = isBakedItem; //还未建立下载记录，不用删除(备份的记录，则删除)
+                DownloadStoped(this, new DownloadStopedEventArgs()
+                {
+                    Success = false,
+                    Canceled = true
+                });
+                return true;
+            }
+            return false;
         }
 
         public async Task<YouTubeVideo> getmaxResolutionVedio()
@@ -327,7 +340,7 @@ namespace YT4k
                     switch (pmt)
                     {
                         case pogressMsgType.show:
-                            labelPogress.Text = ((value == 0) ? ("") : (string.Format("{0:n0}", value))) + "  (双击取消下载)";
+                            labelPogress.Text = ((value == 0) ? ("双击取消下载") : (string.Format("{0:n0}", value))) + "  (双击取消下载)";
                             panelPogress.Visible = true;
                             progressBar1.Maximum = 100;
                             progressBar1.Value = 0;
