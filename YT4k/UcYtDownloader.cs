@@ -141,13 +141,23 @@ namespace YT4k
                 async () => {
                     while (!token.IsCancellationRequested)
                     {
-                        long? cLength = maxResolution.ContentLength;
+                        long? cLength = null;
+                        try
+                        {
+                            cLength = maxResolution.ContentLength;
+                        }
+                        catch (Exception e)
+                        {
+                            FrmMain.log(LogTask.logType_erro, "读取视频长度失败:", e);
+                        }
+
                         if (cLength.HasValue)
                         {
                             _fileSize = cLength.Value;
                             FrmMain.log(LogTask.logType_erro, "视频长度:"+ _fileSize, null);
                             break;
                         }
+
                         showMsg("读取视频长度失败，重试……");
                         FrmMain.log(LogTask.logType_erro, "读取视频长度失败，重试", null);
                     }
