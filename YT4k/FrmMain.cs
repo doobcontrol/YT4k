@@ -57,7 +57,10 @@ namespace YT4k
             changeMonitorStatus(checkBoxClipboardMonitor.Checked);
 
             statusLabelMsg.Spring = true; //内容过长时不会消失。但会剧中，因此有下行代码
-            statusLabelMsg.TextAlign = ContentAlignment.MiddleLeft;
+            statusLabelMsg.TextAlign = ContentAlignment.MiddleLeft; 
+            
+            this.StartPosition = FormStartPosition.Manual;
+            getFormPars(this);
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -420,6 +423,88 @@ namespace YT4k
             }
             changeMonitorStatus(true);
         }
+        #endregion
+
+        #region 保存和恢复窗体参数（位置，大小等）
+
+        static public string strFormParsTableName = "formpars";
+        static public string formStartPosition = "StartPosition";
+        static public string formLocationX = "LocationX";
+        static public string formLocationY = "LocationY";
+        static public string formWindowState = "FormWindowState";
+        static public string formWidth = "formWidth";
+        static public string formHeight = "formHeight";
+
+        static public void getFormPars(Form form)
+        {
+            getFormPars(form, true, true);
+        }
+        static public void getFormPars(Form form, bool getSize, bool getLocate)
+        {
+            string rowName = form.Name;
+            Dictionary<string, string> parsDic = xConfig.getTabledRowPars(strFormParsTableName, rowName);
+
+            if (parsDic != null)
+            {
+                if (getLocate && parsDic.ContainsKey(formLocationX))
+                {
+                    form.Location = new System.Drawing.Point(
+                    int.Parse(parsDic[formLocationX]),
+                    int.Parse(parsDic[formLocationY]));
+                }
+
+                if (getSize && parsDic.ContainsKey(formWidth))
+                {
+                    form.Width = int.Parse(parsDic[formWidth]);
+                    form.Height = int.Parse(parsDic[formHeight]);
+                }
+
+                if (parsDic.ContainsKey(formWindowState))
+                {
+                    FormWindowState fws = (FormWindowState)
+                        Enum.Parse(
+                            typeof(FormWindowState), parsDic[formWindowState]);
+                    form.WindowState = fws;
+                }
+            }
+
+            if (getLocate)
+            {
+                form.LocationChanged += form_LocationChanged;
+            }
+            if (getSize)
+            {
+                form.Resize += form_Resize;
+            }
+        }
+
+        static private void form_LocationChanged(object sender, EventArgs e)
+        {
+            Form form = sender as Form;
+            if (form.WindowState == FormWindowState.Normal)
+            {
+                Dictionary<string, string> parsDic = new Dictionary<string, string>();
+                parsDic.Add(formLocationX, form.Location.X.ToString());
+                parsDic.Add(formLocationY, form.Location.Y.ToString());
+                xConfig.editTabledParsRow(strFormParsTableName, form.Name, parsDic); //暂不支持同对象多窗体？？
+            }
+        }
+
+        static private void form_Resize(object sender, EventArgs e)
+        {
+            Form form = sender as Form;
+            Dictionary<string, string> parsDic = new Dictionary<string, string>();
+
+            parsDic.Add(formWindowState, form.WindowState.ToString());
+            if (form.WindowState == FormWindowState.Normal)
+            {
+                parsDic.Add(formWidth, form.Width.ToString());
+                parsDic.Add(formHeight, form.Height.ToString());
+            }
+
+            xConfig.editTabledParsRow(strFormParsTableName, form.Name, parsDic);
+        }
+
         #endregion
     }
     class ClipboardMonitor
