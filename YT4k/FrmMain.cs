@@ -308,6 +308,9 @@ namespace YT4k
             }
             else
             {
+                senderUcYtDownloader.DownloadStoped -= UcYtDownloader_DownloadStoped;
+                senderUcYtDownloader.ChunkDownloaded -= UcYtDownloader_ChunkDownloaded;
+                senderUcYtDownloader.VedioInfoGot -= UcYtDownloader_VedioInfoGot;
                 downloadingDic.Remove(senderUcYtDownloader.VedioUri);
                 panelDownloaderContainer.Controls.Remove(senderUcYtDownloader);
                 

@@ -90,7 +90,7 @@ namespace YT4k
             }
         }
 
-        CustomYouTube youTube;
+        CustomYouTube? youTube;
         public async Task startAsync(string vUri, string savedFile, long startBlock)
         {
             this.vedioUri = vUri;
@@ -107,7 +107,7 @@ namespace YT4k
 
             showMsg("读取视频信息……");
 
-            YouTubeVideo maxResolution;
+            YouTubeVideo? maxResolution;
 
             try
             {
