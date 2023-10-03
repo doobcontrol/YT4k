@@ -165,6 +165,11 @@ namespace YT4k
             panelDownloaderContainer.Controls.Add(ytDownloderCt);
             downloadingDic.Add(vUrl, ytDownloderCt);
 
+            if (downloadingDic.Count == 1)
+            {
+                SystemSleepManagement.PreventSleep();
+            }
+
             statusLabelMsg.Text = "任务已添加，总" + downloadingDic.Count + "项";
             Text = appTitle + downloadingDic.Count + "项任务";
 
@@ -321,7 +326,12 @@ namespace YT4k
 
                 statusLabelMsg.Text = msg;
                 Text = appTitle + downloadingDic.Count + "项任务";
-            }
+
+                if (downloadingDic.Count == 0)
+                    {
+                        SystemSleepManagement.RestoreSleep();
+                    }
+                }
         }
 
         #endregion
