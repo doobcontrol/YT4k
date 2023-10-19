@@ -332,9 +332,8 @@ namespace YT4k
             {
                 try
                 {
-                    panelPogress.BeginInvoke(
-                        () => {
-                            showPogress(pmt, value);
+                    panelPogress.Invoke(() => {  //BeginInvoke debug:看是否能解决长时大量任务下的失去响应问题
+                        showPogress(pmt, value);
                         }
                     );
                 }
@@ -379,7 +378,7 @@ namespace YT4k
         {
             if (labelMsg.InvokeRequired)
             {
-                labelMsg.BeginInvoke(() => {
+                labelMsg.Invoke(() => {  //BeginInvoke debug:看是否能解决长时大量任务下的失去响应问题
                     showMsg(msg);
                 }
                 );
@@ -393,7 +392,7 @@ namespace YT4k
         {
             if (labelVedioInfo.InvokeRequired)
             {
-                labelVedioInfo.BeginInvoke(() => {
+                labelVedioInfo.Invoke(() => {  //BeginInvoke debug:看是否能解决长时大量任务下的失去响应问题
                     showVedioInfo(msg);
                 }
                 );
