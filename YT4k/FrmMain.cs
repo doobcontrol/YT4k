@@ -215,6 +215,7 @@ namespace YT4k
 
         #region 下载类事件
 
+        object xConfigLockObj = new object();
         private void UcYtDownloader_DownloadStoped(object? sender, DownloadStopedEventArgs? e)
         {
             bool deleteConfig = false;
@@ -280,18 +281,24 @@ namespace YT4k
 
             if (deleteConfig)
             {
-                xConfig.delListPar(ListParName, senderUcYtDownloader.VedioUri);
+                lock (xConfigLockObj)
+                {
+                    xConfig.delListPar(ListParName, senderUcYtDownloader.VedioUri);
+                }
             }
         }
         private void UcYtDownloader_ChunkDownloaded(object? sender, ChunkDownloadedEventArgs? e)
         {
             UcYtDownloader senderUcYtDownloader = sender as UcYtDownloader;
 
-            xConfig.editListPar(
-                ListParName,
-                senderUcYtDownloader.VedioUri,
-                ListParName_startBlock,
-                e.chuckIndex.ToString());
+            lock (xConfigLockObj)
+            {
+                xConfig.editListPar(
+                    ListParName,
+                    senderUcYtDownloader.VedioUri,
+                    ListParName_startBlock,
+                    e.chuckIndex.ToString());
+            }
         }
         private void UcYtDownloader_VedioInfoGot(object? sender, EventArgs? e)
         {
@@ -302,7 +309,10 @@ namespace YT4k
             taskPars.Add(ListItemNodeIDAttr, ytDownloderCt.VedioUri);
             taskPars.Add(ListParName_startBlock, "-1");
             taskPars.Add(ListParName_vFile, ytDownloderCt.SaveFile);
-            xConfig.editListPar(ListParName, taskPars);
+            lock (xConfigLockObj)
+            {
+                xConfig.editListPar(ListParName, taskPars);
+            }
         }
        
         private void removeDownloadTask(UcYtDownloader senderUcYtDownloader, string msg)
