@@ -172,7 +172,10 @@ namespace YT4k
             if (startBlock == 0)
             {
                 saveFile = System.Guid.NewGuid().ToString("N");//下载到临时文件，成功再拷贝  maxResolution.FullName;
-                VedioInfoGot(this, null);
+                await Task.Run(
+                    async () => {
+                        VedioInfoGot(this, null);//多线程下（写配置文件？）阻塞，导致UI失败响应？？
+                    });
             }
             
             showPogress(pogressMsgType.show, _fileSize);
