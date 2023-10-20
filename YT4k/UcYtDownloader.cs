@@ -281,6 +281,18 @@ namespace YT4k
                 {
                     throw e;
                 }
+                catch (HttpRequestException e)
+                {
+                    if(e.StatusCode == HttpStatusCode.TooManyRequests)
+                    {
+                        showMsg("太多请求，等待2分钟……");
+                        FrmMain.log(LogTask.logType_erro, "太多请求，等待2分钟……", e);
+                        await Task.Run(
+                            () => {
+                                Thread.Sleep(1000 * 120);
+                            });
+                    }
+                }
                 catch (Exception e)
                 {
                     showMsg("读取视频信息失败，重试……");
