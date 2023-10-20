@@ -65,17 +65,22 @@ namespace YT4k
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            Dictionary<string, Dictionary<string, string>> bpList = xConfig.getList(ListParName);
-            if (bpList != null)
-            {
-                foreach(Dictionary<string, string> bpDic in bpList.Values)
-                {
-                    startDownloadTaskAsync(
-                        bpDic[ListItemNodeIDAttr],
-                        bpDic[ListParName_vFile],
-                        long.Parse(bpDic[ListParName_startBlock]) + 1);
-                }
-            }
+            //避免密集发直请求，导致触发 too many requests，每隔5秒恢复一个任务
+            _ = Task.Run(
+                () => {
+                    Dictionary<string, Dictionary<string, string>> bpList = xConfig.getList(ListParName);
+                    if (bpList != null)
+                    {
+                        foreach (Dictionary<string, string> bpDic in bpList.Values)
+                        {
+                            startDownloadTaskAsync(
+                                bpDic[ListItemNodeIDAttr],
+                                bpDic[ListParName_vFile],
+                                long.Parse(bpDic[ListParName_startBlock]) + 1);
+                            Thread.Sleep(5000);
+                        }
+                    }
+                });
         }
 
         private void labelStartTask_Click(object sender, EventArgs e)
