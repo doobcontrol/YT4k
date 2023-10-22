@@ -36,14 +36,17 @@
             this.statusLabelMsg = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.cbCurrVListName = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnOpenRecordFileFold = new System.Windows.Forms.Button();
             this.checkBoxClipboardMonitor = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.nudConcurrent = new System.Windows.Forms.NumericUpDown();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudConcurrent)).BeginInit();
             this.SuspendLayout();
             // 
             // panelDownloaderContainer
@@ -94,6 +97,8 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.nudConcurrent);
+            this.panel2.Controls.Add(this.cbCurrVListName);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.checkBoxClipboardMonitor);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -101,6 +106,14 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(800, 30);
             this.panel2.TabIndex = 3;
+            // 
+            // cbCurrVListName
+            // 
+            this.cbCurrVListName.FormattingEnabled = true;
+            this.cbCurrVListName.Location = new System.Drawing.Point(133, 2);
+            this.cbCurrVListName.Name = "cbCurrVListName";
+            this.cbCurrVListName.Size = new System.Drawing.Size(121, 25);
+            this.cbCurrVListName.TabIndex = 9;
             // 
             // panel3
             // 
@@ -135,6 +148,13 @@
             this.checkBoxClipboardMonitor.Text = "监视剪贴板";
             this.checkBoxClipboardMonitor.UseVisualStyleBackColor = true;
             // 
+            // nudConcurrent
+            // 
+            this.nudConcurrent.Location = new System.Drawing.Point(260, 3);
+            this.nudConcurrent.Name = "nudConcurrent";
+            this.nudConcurrent.Size = new System.Drawing.Size(44, 23);
+            this.nudConcurrent.TabIndex = 10;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -155,6 +175,7 @@
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudConcurrent)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -172,5 +193,7 @@
         private Panel panel3;
         private Button btnOpenRecordFileFold;
         private ToolTip toolTip1;
+        private ComboBox cbCurrVListName;
+        private NumericUpDown nudConcurrent;
     }
 }

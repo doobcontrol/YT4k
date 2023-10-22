@@ -27,7 +27,8 @@ namespace YT4k
         string ListParName_vFile = "vFile";
         string appTitle;
 
-        string downloadDir = "downloadFile";
+        string downloadDir = "download";
+        string configDir = "config";
         public FrmMain()
         {
             InitializeComponent();
@@ -37,6 +38,15 @@ namespace YT4k
 
             appTitle = Application.ProductName + "(V" + Application.ProductVersion.ToString() + ") - ";
             Text = appTitle + downloadingDic.Count + "项任务";
+
+            cbCurrVListName.DropDownStyle = ComboBoxStyle.DropDownList;
+            toolTip1.SetToolTip(cbCurrVListName, "视频列表");
+
+            nudConcurrent.Minimum = 1;
+            nudConcurrent.Maximum = 10; 
+            toolTip1.SetToolTip(nudConcurrent, "同时下载数");
+            nudConcurrent.Value = int.Parse(xConfig.getOnePar("Concurrent", "1"));
+            nudConcurrent.ValueChanged += NudConcurrent_ValueChanged;
 
             labelStartTask.Dock = DockStyle.Fill;
             labelStartTask.BorderStyle=BorderStyle.FixedSingle;
@@ -78,6 +88,12 @@ namespace YT4k
                         long.Parse(bpDic[ListParName_startBlock]) + 1);
                 }
             }
+            initDownloadTaskList();
+        }
+
+        private void NudConcurrent_ValueChanged(object? sender, EventArgs e)
+        {
+            xConfig.setOnePar("Concurrent", nudConcurrent.Value.ToString());
         }
 
         private void labelStartTask_Click(object sender, EventArgs e)
@@ -85,7 +101,14 @@ namespace YT4k
             string uStr = Clipboard.GetText();
             if (checkYoutubeUri(uStr))
             {
-                startDownloadTaskAsync(uStr, "defaultList"); //定制弹窗前临时处理
+                if (downloadingDic.Count >= nudConcurrent.Value)
+                {
+                    addOneDownloadTaskItem(uStr.Split("=")[1], cbCurrVListName.Text);
+                }
+                else
+                {
+                    startDownloadTaskAsync(uStr, cbCurrVListName.Text);
+                }
             }
             else
             {
@@ -352,6 +375,85 @@ namespace YT4k
                         SystemSleepManagement.RestoreSleep();
                     }
                 }
+        }
+
+        #endregion
+
+        #region 任务列表管理
+
+        static public string defaultListName = "defaultList";
+        static public Dictionary<string, List<string>>
+            DownloadTaskList = new Dictionary<string, List<string>>();
+
+        /// <summary>
+        /// 程序启动时加载任务列表
+        /// 从配置文件目录中读取列表文件，文件名为列表名，内容为列表项
+        /// </summary>
+        private void initDownloadTaskList()
+        {
+            if (!Directory.Exists(configDir))
+            {
+                Directory.CreateDirectory(configDir);
+            }
+
+            string[] vdListArr = Directory.GetFiles(configDir);
+            List<string> tList;
+            foreach(string vListFile in vdListArr)
+            {
+                tList = new List<string>();
+                foreach (string line in File.ReadLines(vListFile))
+                {
+                    tList.Add(line);
+                }
+                DownloadTaskList.Add(Path.GetFileName(vListFile), tList);
+                cbCurrVListName.Items.Add(Path.GetFileName(vListFile));
+            }
+
+            if (DownloadTaskList.Count == 0)
+            {
+                DownloadTaskList.Add(defaultListName, new List<string>());
+                cbCurrVListName.Items.Add(defaultListName);
+            }
+
+            cbCurrVListName.Text = DownloadTaskList.Keys.First();
+        }
+
+        private void addOneDownloadTaskItem(string vID, string vListName)
+        {
+            List<string> tList = getDownloadTaskList(vListName);
+            if (tList.Contains(vID))
+            {
+                statusLabelMsg.Text = "重复地址:已存在于当前待下载列表";
+            }
+            else
+            {
+                tList.Add(vID);
+                saveDownloadTaskList(vListName);
+                statusLabelMsg.Text = "超出最大同时下载数，已加入待下载列表";
+            }
+        }
+
+        private List<string> getDownloadTaskList(string vListName)
+        {
+            List<string> tList = DownloadTaskList.GetValueOrDefault(vListName);
+            if (tList == null)
+            {
+                tList = new List<string>();
+                DownloadTaskList.Add(vListName, tList);
+                cbCurrVListName.Items.Add(vListName);
+            }
+            return tList;
+        }
+
+        private void saveDownloadTaskList(string vListName)
+        {
+            List<string> tList = getDownloadTaskList(vListName);
+            StringBuilder taskListstr = new StringBuilder();
+            foreach(string tItem in tList)
+            {
+                taskListstr.Append(tItem + System.Environment.NewLine);
+            }
+            File.WriteAllText(Path.Combine(configDir, vListName), taskListstr.ToString());
         }
 
         #endregion
