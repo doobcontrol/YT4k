@@ -39,6 +39,9 @@ namespace YT4k
         string vedioUri;
         public string VedioUri { get { return vedioUri; } }
 
+        string vedioListName;
+        public string VedioListName { get { return vedioListName; } }
+
         string saveFile;
         public string SaveFile { get { return saveFile; } }
 
@@ -91,10 +94,11 @@ namespace YT4k
         }
 
         CustomYouTube? youTube;
-        public async Task startAsync(string vUri, string savedFile, long startBlock)
+        public async Task startAsync(string vUri, string vListName, string savedFile, long startBlock)
         {
             this.vedioUri = vUri;
-            labelVedioUri.Text = vUri;
+            this.vedioListName = vListName;
+            showVedioUri(vListName + "：" + vUri);
 
             youTube = new CustomYouTube(); //YouTube.Default; // starting point for YouTube actions
             youTube.ChunkDownloaded += youTube_ChunkDownloaded;
@@ -222,7 +226,7 @@ namespace YT4k
                         else
                         {
                             string targetFile = repeatingFileCheck(
-                                downloadDir,
+                                Path.Combine(downloadDir, vListName),
                                 Path.GetFileNameWithoutExtension(vedioName),
                                 Path.GetExtension(vedioName)
                             );
@@ -417,6 +421,20 @@ namespace YT4k
                 labelVedioInfo.Text = msg;
             }
         }
+        private void showVedioUri(string msg)
+        {
+            if (labelVedioUri.InvokeRequired)
+            {
+                labelVedioUri.Invoke(() => {  //BeginInvoke debug:看是否能解决长时大量任务下的失去响应问题
+                    showVedioUri(msg);
+                }
+                );
+            }
+            else
+            {
+                labelVedioUri.Text = msg;
+            }
+        }
 
         private void cancelDownload_DoubleClick(object? sender, EventArgs? e)
         {
@@ -445,14 +463,22 @@ namespace YT4k
             string retFile = Path.Combine(savePath,
                 itemName + fileExt
                 );
-            //重名检查
-            int fileIndex = 1;
-            while (System.IO.File.Exists(retFile))
+
+            if (!Directory.Exists(savePath))
             {
-                retFile = Path.Combine(savePath,
-                itemName + "-" + fileIndex + fileExt
-                );
-                fileIndex++;
+                Directory.CreateDirectory(savePath);
+            }
+            else
+            {
+                //重名检查
+                int fileIndex = 1;
+                while (System.IO.File.Exists(retFile))
+                {
+                    retFile = Path.Combine(savePath,
+                    itemName + "-" + fileIndex + fileExt
+                    );
+                    fileIndex++;
+                }
             }
             return retFile;
         }

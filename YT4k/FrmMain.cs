@@ -22,6 +22,7 @@ namespace YT4k
         Dictionary<string, UcYtDownloader> downloadingDic = new Dictionary<string, UcYtDownloader>();
         string ListParName = "yt4kbp";
         string ListItemNodeIDAttr = "id";
+        string ListItemNodeVListNameAttr = "ln";
         string ListParName_startBlock = "startBlock";
         string ListParName_vFile = "vFile";
         string appTitle;
@@ -65,22 +66,18 @@ namespace YT4k
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            //避免密集发直请求，导致触发 too many requests，每隔5秒恢复一个任务
-            _ = Task.Run(
-                () => {
-                    Dictionary<string, Dictionary<string, string>> bpList = xConfig.getList(ListParName);
-                    if (bpList != null)
-                    {
-                        foreach (Dictionary<string, string> bpDic in bpList.Values)
-                        {
-                            startDownloadTaskAsync(
-                                bpDic[ListItemNodeIDAttr],
-                                bpDic[ListParName_vFile],
-                                long.Parse(bpDic[ListParName_startBlock]) + 1);
-                            Thread.Sleep(5000);
-                        }
-                    }
-                });
+            Dictionary<string, Dictionary<string, string>> bpList = xConfig.getList(ListParName);
+            if (bpList != null)
+            {
+                foreach (Dictionary<string, string> bpDic in bpList.Values)
+                {
+                    startDownloadTaskAsync(
+                        bpDic[ListItemNodeIDAttr],
+                        bpDic[ListItemNodeVListNameAttr],
+                        bpDic[ListParName_vFile],
+                        long.Parse(bpDic[ListParName_startBlock]) + 1);
+                }
+            }
         }
 
         private void labelStartTask_Click(object sender, EventArgs e)
@@ -88,7 +85,7 @@ namespace YT4k
             string uStr = Clipboard.GetText();
             if (checkYoutubeUri(uStr))
             {
-                startDownloadTaskAsync(uStr);
+                startDownloadTaskAsync(uStr, "defaultList"); //定制弹窗前临时处理
             }
             else
             {
@@ -154,7 +151,7 @@ namespace YT4k
                 return false;
             }
         }
-        private void startDownloadTaskAsync(string uStr, string savedFile, long startBlock)
+        private void startDownloadTaskAsync(string uStr, string vListName, string savedFile, long startBlock)
         {
             UcYtDownloader ytDownloderCt = new UcYtDownloader();
             ytDownloderCt.DownloadStoped += UcYtDownloader_DownloadStoped;
@@ -180,11 +177,11 @@ namespace YT4k
 
             log(LogTask.logType_info, "启动任务（" + downloadingDic.Count + "）：" + vUrl, null);
 
-            _ = ytDownloderCt.startAsync(vUrl, savedFile, startBlock);
+            _ = ytDownloderCt.startAsync(vUrl, vListName, savedFile, startBlock);
         }
-        private void startDownloadTaskAsync(string uStr)
+        private void startDownloadTaskAsync(string uStr, string vListName)
         {
-            startDownloadTaskAsync(uStr, null, 0);
+            startDownloadTaskAsync(uStr, vListName, null, 0);
         }
 
         private void FrmMain_FormClosingAsync(object sender, FormClosingEventArgs e)
@@ -318,6 +315,7 @@ namespace YT4k
             //保存
             Dictionary<string, string> taskPars = new Dictionary<string, string>();
             taskPars.Add(ListItemNodeIDAttr, ytDownloderCt.VedioUri);
+            taskPars.Add(ListItemNodeVListNameAttr, ytDownloderCt.VedioListName);
             taskPars.Add(ListParName_startBlock, "-1");
             taskPars.Add(ListParName_vFile, ytDownloderCt.SaveFile);
             //lock (xConfigLockObj)
@@ -450,7 +448,7 @@ namespace YT4k
                     ) == DialogResult.Yes
                     )
                 {
-                    startDownloadTaskAsync(ClipboardString);
+                    startDownloadTaskAsync(ClipboardString, "defaultList"); //定制弹窗前临时处理
                 }
             }
             changeMonitorStatus(true);
