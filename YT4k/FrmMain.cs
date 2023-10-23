@@ -34,6 +34,7 @@ namespace YT4k
         public FrmMain()
         {
             InitializeComponent();
+            this.Icon = Properties.Resources.yt4kicon;
 
             //临时解决方案，避免后续写的时候出被写保护错，导致保存的下载断点不一至（需要在xConfig库解决）
             xConfig.setOnePar("starttime",DateTime.Now.ToString("yyyyMMdd-HHmmss"));
@@ -50,26 +51,13 @@ namespace YT4k
             nudConcurrent.Value = int.Parse(xConfig.getOnePar("Concurrent", "1"));
             nudConcurrent.ValueChanged += NudConcurrent_ValueChanged;
 
-            labelStartTask.Dock = DockStyle.Fill;
-            labelStartTask.BorderStyle=BorderStyle.FixedSingle;
-            labelStartTask.BackColor = SystemColors.MenuBar;
-            labelStartTask.AutoSize = false;
-            labelStartTask.TextAlign = ContentAlignment.MiddleCenter;
-            labelStartTask.Cursor = Cursors.Hand;
-            labelStartTask.Text = "粘贴并下载";
-
             toolTip1.SetToolTip(btnOpenTaskManage, "管理等待下载的任务");
+            toolTip1.SetToolTip(btnPasteTask, "直接从剪贴板粘贴并下载");
 
             panelDownloaderContainer.AutoScroll = true;
             panelDownloaderContainer.BorderStyle = BorderStyle.FixedSingle;
 
             statusLabelMsg.Text = "";
-
-            checkBoxClipboardMonitor.Padding= new Padding(0, 5, 0, 0);
-            checkBoxClipboardMonitor.CheckedChanged += new EventHandler((sender, e) => {
-                changeMonitorStatus(((CheckBox)sender).Checked);
-            }); 
-            changeMonitorStatus(checkBoxClipboardMonitor.Checked);
 
             statusLabelMsg.Spring = true; //内容过长时不会消失。但会剧中，因此有下行代码
             statusLabelMsg.TextAlign = ContentAlignment.MiddleLeft; 
@@ -93,31 +81,15 @@ namespace YT4k
                 }
             }
             initDownloadTaskList();
+
+            startDownloadTaskFromList();
         }
 
         private void NudConcurrent_ValueChanged(object? sender, EventArgs e)
         {
             xConfig.setOnePar("Concurrent", nudConcurrent.Value.ToString());
-        }
 
-        private void labelStartTask_Click(object sender, EventArgs e)
-        {
-            string uStr = Clipboard.GetText();
-            if (checkYoutubeUri(uStr))
-            {
-                if (downloadingDic.Count >= nudConcurrent.Value)
-                {
-                    addOneDownloadTaskItem(uStr.Split("=")[1], cbCurrVListName.Text);
-                }
-                else
-                {
-                    startDownloadTaskAsync(uStr, cbCurrVListName.Text);
-                }
-            }
-            else
-            {
-                statusLabelMsg.Text = "无效地址:请先拷贝youtube视频页面地址再点本按钮";
-            }
+            startDownloadTaskFromList();
         }
 
         private void btnOpenRecordFileFold_Click(object sender, EventArgs e)
@@ -142,7 +114,35 @@ namespace YT4k
 
         private void btnOpenTaskManage_Click(object sender, EventArgs e)
         {
+            //先清剪贴板
+            //Because the Clipboard is shared by multiple processes,
+            //calling this method may have an impact on those processes.
+            Clipboard.Clear();
+
             new FrmTaskList().ShowDialog();
+            resetCurrVListName();
+
+            startDownloadTaskFromList();
+        }
+
+        private void btnPasteTask_Click(object sender, EventArgs e)
+        {
+            string uStr = Clipboard.GetText();
+            if (checkYoutubeUri(uStr))
+            {
+                if (downloadingDic.Count >= nudConcurrent.Value)
+                {
+                    addOneDownloadTaskItem(uStr.Split("=")[1], cbCurrVListName.Text);
+                }
+                else
+                {
+                    startDownloadTaskAsync(uStr, cbCurrVListName.Text);
+                }
+            }
+            else
+            {
+                statusLabelMsg.Text = "无效地址:请先拷贝youtube视频页面地址再点本按钮";
+            }
         }
 
         static public bool checkYoutubeUri(string uStr)
@@ -216,6 +216,8 @@ namespace YT4k
             startDownloadTaskAsync(uStr, vListName, null, 0);
         }
 
+        private bool inDownloadTaskFromList = false;
+
         private void FrmMain_FormClosingAsync(object sender, FormClosingEventArgs e)
         {
             if (downloadingDic.Count > 0)
@@ -249,7 +251,6 @@ namespace YT4k
 
         #region 下载类事件
 
-        //object xConfigLockObj = new object();
         private void UcYtDownloader_DownloadStoped(object? sender, DownloadStopedEventArgs? e)
         {
             bool deleteConfig = false;
@@ -315,25 +316,19 @@ namespace YT4k
 
             if (deleteConfig)
             {
-                //lock (xConfigLockObj)
-                //{
-                //    xConfig.delListPar(ListParName, senderUcYtDownloader.VedioUri);
-                //}
                 xConfig.delListPar(ListParName, senderUcYtDownloader.VedioUri);
+            }
+
+            //开始关闭程序时写为此标志为false，因此用以判断 是否启动新任务
+            if (this.ControlBox)
+            {
+                startDownloadTaskFromList();
             }
         }
         private void UcYtDownloader_ChunkDownloaded(object? sender, ChunkDownloadedEventArgs? e)
         {
             UcYtDownloader senderUcYtDownloader = sender as UcYtDownloader;
 
-            //lock (xConfigLockObj)
-            //{
-            //    xConfig.editListPar(
-            //        ListParName,
-            //        senderUcYtDownloader.VedioUri,
-            //        ListParName_startBlock,
-            //        e.chuckIndex.ToString());
-            //}
             xConfig.editListPar(
                 ListParName,
                 senderUcYtDownloader.VedioUri,
@@ -350,10 +345,6 @@ namespace YT4k
             taskPars.Add(ListItemNodeVListNameAttr, ytDownloderCt.VedioListName);
             taskPars.Add(ListParName_startBlock, "-1");
             taskPars.Add(ListParName_vFile, ytDownloderCt.SaveFile);
-            //lock (xConfigLockObj)
-            //{
-            //    xConfig.editListPar(ListParName, taskPars);
-            //}
             xConfig.editListPar(ListParName, taskPars);
         }
        
@@ -423,8 +414,6 @@ namespace YT4k
                 DownloadTaskList.Add(defaultListName, new List<string>());
                 cbCurrVListName.Items.Add(defaultListName);
             }
-
-            cbCurrVListName.Text = DownloadTaskList.Keys.First();
         }
 
         private void addOneDownloadTaskItem(string vID, string vListName)
@@ -474,6 +463,74 @@ namespace YT4k
             }
         }
 
+        private void startDownloadTaskFromList()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(
+                    () => startDownloadTaskFromList()
+                    );
+            }
+            else
+            {
+                if (!inDownloadTaskFromList)
+                {
+                    inDownloadTaskFromList = true;
+
+                    while (
+                        downloadingDic.Count < nudConcurrent.Value
+                        && DownloadTaskList.Count > 0
+                        )
+                    {
+                        string vListName = DownloadTaskList.Keys.First();
+                        List<string> fList = DownloadTaskList[vListName];
+                        if (fList.Count > 0)
+                        {
+                            string vID= fList.First();
+                            string uStr = "https://www.youtube.com/watch?v=" + vID;
+                            startDownloadTaskAsync(uStr, vListName);
+                            fList.Remove(vID);
+                        }
+                        else
+                        {
+                            DownloadTaskList.Remove(vListName);
+                        }
+                        saveDownloadTaskList(vListName, fList);
+                    }
+
+                    //若全部完成，增加一个默认列表
+                    if (DownloadTaskList.Count == 0)
+                    {
+                        DownloadTaskList.Add(defaultListName, new List<string>());
+                        cbCurrVListName.Items.Add(defaultListName);
+                    }
+
+                    //重置默认列表选择
+                    resetCurrVListName();
+
+                    inDownloadTaskFromList = false;
+                }
+            }
+        }
+
+        private void resetCurrVListName()
+        {
+            string oName = cbCurrVListName.Text;
+            cbCurrVListName.Items.Clear();
+            foreach (string lName in DownloadTaskList.Keys)
+            {
+                cbCurrVListName.Items.Add(lName);
+            }
+            if (cbCurrVListName.Items.Contains(oName))
+            {
+                cbCurrVListName.Text = oName;
+            }
+            else
+            {
+                cbCurrVListName.Text = DownloadTaskList.Keys.First();
+            }
+        }
+
         #endregion
 
         #region 日志
@@ -517,62 +574,6 @@ namespace YT4k
             }
         }
 
-        #endregion
-
-        #region 监视剪贴板
-
-        bool InClipboardMonitor = false;
-
-        ClipboardMonitor cm;
-        protected override void WndProc(ref Message m)
-        {
-            if (InClipboardMonitor)
-            {
-                if (!cm.WndProc(ref m))
-                {
-                    base.WndProc(ref m);
-                }
-            }
-            else
-            {
-                base.WndProc(ref m);
-            }
-        }
-
-        private void changeMonitorStatus(bool inClipboardMonitor)
-        {
-            if (cm == null)
-            {
-                cm = new ClipboardMonitor();
-                cm.ClipboardMsgHandler += ClipboardText_get;
-            }
-            InClipboardMonitor = inClipboardMonitor;
-            cm.changeMonitorStatus(InClipboardMonitor, Handle);
-        }
-        private void ClipboardText_get(object sender, EventArgs e)
-        {
-            if (!InClipboardMonitor)
-            {
-                return;
-            }
-            changeMonitorStatus(false);
-            string ClipboardString = ((ClipboardMonitor)sender).ClipboardString;
-            if (checkYoutubeUri(ClipboardString))
-            {
-                this.Activate();
-                if (MessageBox.Show(
-                    "视频地址：" + ClipboardString + "\n下载？",
-                    "下载确认",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
-                    ) == DialogResult.Yes
-                    )
-                {
-                    startDownloadTaskAsync(ClipboardString, "defaultList"); //定制弹窗前临时处理
-                }
-            }
-            changeMonitorStatus(true);
-        }
         #endregion
 
         #region 保存和恢复窗体参数（位置，大小等）

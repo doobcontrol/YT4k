@@ -16,24 +16,43 @@ namespace YT4k
         public FrmTaskList()
         {
             InitializeComponent();
+            this.Icon = Properties.Resources.yt4kicon;
             Text = "待下载任务管理";
 
             this.StartPosition = FormStartPosition.CenterParent;
             this.ShowInTaskbar = false;
+
+            tsbDeleteTask.Visible = false;
+            tsbDeleteList.Visible = false;
 
             foreach (string listName in FrmMain.DownloadTaskList.Keys)
             {
                 lbVList.Items.Add(listName);
             }
             lbVList.SelectedIndexChanged += LbVList_SelectedIndexChanged;
-            lbVList.SelectedIndex = 0;
+            if (lbVList.Items.Count > 0)
+            {
+                lbVList.SelectedIndex = 0;
+            }
 
             lvTaskList.SelectedIndexChanged += LvTaskList_SelectedIndexChanged;
             lvTaskList.View = System.Windows.Forms.View.List;
 
             this.FormClosed += FrmTaskList_FormClosed;
+        }
 
+        private void FrmTaskList_Load(object sender, EventArgs e)
+        {
             changeMonitorStatus(true);
+        }
+
+        private void FrmTaskList_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            changeMonitorStatus(false);
+            if (taskListChanged)
+            {
+                FrmMain.saveDownloadTaskList(selectedListName, selectedList);
+            }
         }
 
         private void LvTaskList_SelectedIndexChanged(object? sender, EventArgs e)
@@ -45,15 +64,6 @@ namespace YT4k
             else
             {
                 tsbDeleteTask.Visible = true;
-            }
-        }
-
-        private void FrmTaskList_FormClosed(object? sender, FormClosedEventArgs e)
-        {
-            changeMonitorStatus(false);
-            if (taskListChanged)
-            {
-                FrmMain.saveDownloadTaskList(selectedListName, selectedList);
             }
         }
 
@@ -77,7 +87,14 @@ namespace YT4k
                     lvTaskList.Items.Add(vID);
                 }
 
-                tsbDeleteList.Visible = true;
+                if (lbVList.SelectedItem.ToString() == FrmMain.defaultListName)
+                {
+                    tsbDeleteList.Visible = false;
+                }
+                else
+                {
+                    tsbDeleteList.Visible = true;
+                }
             }
             else
             {
@@ -92,7 +109,7 @@ namespace YT4k
         private void addOneTask(string vUri)
         {
             string vID = vUri.Split("=")[1];
-            if (!selectedList.Contains(vID))
+            if (selectedList != null && !selectedList.Contains(vID))
             {
                 selectedList.Add(vID);
                 lvTaskList.Items.Add(vID);
@@ -162,7 +179,7 @@ namespace YT4k
         ClipboardMonitor cm;
         protected override void WndProc(ref Message m)
         {
-            if (InClipboardMonitor)
+            if (InClipboardMonitor && cm != null)
             {
                 if (!cm.WndProc(ref m))
                 {

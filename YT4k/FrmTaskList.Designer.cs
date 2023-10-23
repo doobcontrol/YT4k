@@ -145,6 +145,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "FrmTaskList";
             this.Text = "FrmTaskList";
+            this.Load += new System.EventHandler(this.FrmTaskList_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.toolStrip2.ResumeLayout(false);
