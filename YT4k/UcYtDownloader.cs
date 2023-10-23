@@ -32,8 +32,6 @@ namespace YT4k
         CancellationTokenSource? tokenSource;
         CancellationToken token;
 
-        string downloadDir = "downloadFile";
-
         #region 属性
 
         string vedioUri;
@@ -87,9 +85,9 @@ namespace YT4k
             labelVedioInfo.Text = "";
             labelPogress.Text = "双击取消下载";
 
-            if (!Directory.Exists(Path.Combine(downloadDir, "temp")))
+            if (!Directory.Exists(Path.Combine(FrmMain.downloadDir, "temp")))
             {
-                Directory.CreateDirectory(Path.Combine(downloadDir, "temp"));
+                Directory.CreateDirectory(Path.Combine(FrmMain.downloadDir, "temp"));
             }
         }
 
@@ -201,7 +199,7 @@ namespace YT4k
                         downloadSucceed = await youTube
                             .CreateDownloadAsync(
                             new Uri(await getDownloadUriAsync(maxResolution)),
-                            Path.Combine(downloadDir, "temp", saveFile),
+                            Path.Combine(FrmMain.downloadDir, "temp", saveFile),
                             startBlock,
                             _fileSize,
                             new Progress<Tuple<long, long>>((Tuple<long, long> v) =>
@@ -213,11 +211,11 @@ namespace YT4k
 
                         if (!downloadSucceed)
                         {
-                            if (File.Exists(Path.Combine(downloadDir, "temp", saveFile)))
+                            if (File.Exists(Path.Combine(FrmMain.downloadDir, "temp", saveFile)))
                             {
                                 if (deleteConfig)
                                 {
-                                    File.Delete(Path.Combine(downloadDir, "temp", saveFile));
+                                    File.Delete(Path.Combine(FrmMain.downloadDir, "temp", saveFile));
                                 }
                             }
                             showMsg("任务已取消");
@@ -226,11 +224,11 @@ namespace YT4k
                         else
                         {
                             string targetFile = repeatingFileCheck(
-                                Path.Combine(downloadDir, vListName),
+                                Path.Combine(FrmMain.downloadDir, vListName),
                                 Path.GetFileNameWithoutExtension(vedioName),
                                 Path.GetExtension(vedioName)
                             );
-                            File.Move(Path.Combine(downloadDir, "temp", saveFile), targetFile);
+                            File.Move(Path.Combine(FrmMain.downloadDir, "temp", saveFile), targetFile);
                             showMsg("下载成功");
                         }
                         dsea.Success = downloadSucceed;

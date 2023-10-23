@@ -19,16 +19,18 @@ namespace YT4k
 {
     public partial class FrmMain : Form
     {
-        Dictionary<string, UcYtDownloader> downloadingDic = new Dictionary<string, UcYtDownloader>();
-        string ListParName = "yt4kbp";
-        string ListItemNodeIDAttr = "id";
-        string ListItemNodeVListNameAttr = "ln";
-        string ListParName_startBlock = "startBlock";
-        string ListParName_vFile = "vFile";
-        string appTitle;
+        static Dictionary<string, UcYtDownloader> downloadingDic 
+            = new Dictionary<string, UcYtDownloader>();
+        static string ListParName = "yt4kbp";
+        static string ListItemNodeIDAttr = "id";
+        static string ListItemNodeVListNameAttr = "ln";
+        static string ListParName_startBlock = "startBlock";
+        static string ListParName_vFile = "vFile";
 
-        string downloadDir = "download";
-        string configDir = "config";
+        static public string downloadDir = "download";
+        static public string taskListsDir = "taskLists";
+
+        string appTitle;
         public FrmMain()
         {
             InitializeComponent();
@@ -55,6 +57,8 @@ namespace YT4k
             labelStartTask.TextAlign = ContentAlignment.MiddleCenter;
             labelStartTask.Cursor = Cursors.Hand;
             labelStartTask.Text = "粘贴并下载";
+
+            toolTip1.SetToolTip(btnOpenTaskManage, "管理等待下载的任务");
 
             panelDownloaderContainer.AutoScroll = true;
             panelDownloaderContainer.BorderStyle = BorderStyle.FixedSingle;
@@ -136,7 +140,12 @@ namespace YT4k
             }
         }
 
-        private bool checkYoutubeUri(string uStr)
+        private void btnOpenTaskManage_Click(object sender, EventArgs e)
+        {
+            new FrmTaskList().ShowDialog();
+        }
+
+        static public bool checkYoutubeUri(string uStr)
         {
             string vUrl = uStr;
             if (uStr.IndexOf('&') != -1)
@@ -162,14 +171,14 @@ namespace YT4k
                 }
                 else
                 {
-                    statusLabelMsg.Text = "重复地址:" + vUrl;
+                    //statusLabelMsg.Text = "重复地址:" + vUrl;
                     log(LogTask.logType_info, "重复地址:" + vUrl, null);
                     return false;
                 }
             }
             else
             {
-                statusLabelMsg.Text = "非法地址:" + vUrl;
+                //statusLabelMsg.Text = "非法地址:" + vUrl;
                 log(LogTask.logType_info, "非法地址:" + vUrl, null);
                 return false;
             }
@@ -391,12 +400,12 @@ namespace YT4k
         /// </summary>
         private void initDownloadTaskList()
         {
-            if (!Directory.Exists(configDir))
+            if (!Directory.Exists(taskListsDir))
             {
-                Directory.CreateDirectory(configDir);
+                Directory.CreateDirectory(taskListsDir);
             }
 
-            string[] vdListArr = Directory.GetFiles(configDir);
+            string[] vdListArr = Directory.GetFiles(taskListsDir);
             List<string> tList;
             foreach(string vListFile in vdListArr)
             {
@@ -428,7 +437,7 @@ namespace YT4k
             else
             {
                 tList.Add(vID);
-                saveDownloadTaskList(vListName);
+                saveDownloadTaskList(vListName, getDownloadTaskList(vListName));
                 statusLabelMsg.Text = "超出最大同时下载数，已加入待下载列表";
             }
         }
@@ -445,15 +454,24 @@ namespace YT4k
             return tList;
         }
 
-        private void saveDownloadTaskList(string vListName)
+        static public void saveDownloadTaskList(string vListName, List<string> tList)
         {
-            List<string> tList = getDownloadTaskList(vListName);
-            StringBuilder taskListstr = new StringBuilder();
-            foreach(string tItem in tList)
+            if (tList.Count > 0)
             {
-                taskListstr.Append(tItem + System.Environment.NewLine);
+                StringBuilder taskListstr = new StringBuilder();
+                foreach (string tItem in tList)
+                {
+                    taskListstr.Append(tItem + System.Environment.NewLine);
+                }
+                File.WriteAllText(Path.Combine(taskListsDir, vListName), taskListstr.ToString());
             }
-            File.WriteAllText(Path.Combine(configDir, vListName), taskListstr.ToString());
+            else
+            {
+                if(File.Exists(Path.Combine(taskListsDir, vListName)))
+                {
+                    File.Delete(Path.Combine(taskListsDir, vListName));
+                }
+            }
         }
 
         #endregion

@@ -36,17 +36,18 @@
             this.statusLabelMsg = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.nudConcurrent = new System.Windows.Forms.NumericUpDown();
             this.cbCurrVListName = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnOpenRecordFileFold = new System.Windows.Forms.Button();
             this.checkBoxClipboardMonitor = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.nudConcurrent = new System.Windows.Forms.NumericUpDown();
+            this.btnOpenTaskManage = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudConcurrent)).BeginInit();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelDownloaderContainer
@@ -97,6 +98,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnOpenTaskManage);
             this.panel2.Controls.Add(this.nudConcurrent);
             this.panel2.Controls.Add(this.cbCurrVListName);
             this.panel2.Controls.Add(this.panel3);
@@ -106,6 +108,13 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(800, 30);
             this.panel2.TabIndex = 3;
+            // 
+            // nudConcurrent
+            // 
+            this.nudConcurrent.Location = new System.Drawing.Point(260, 3);
+            this.nudConcurrent.Name = "nudConcurrent";
+            this.nudConcurrent.Size = new System.Drawing.Size(44, 23);
+            this.nudConcurrent.TabIndex = 10;
             // 
             // cbCurrVListName
             // 
@@ -148,12 +157,17 @@
             this.checkBoxClipboardMonitor.Text = "监视剪贴板";
             this.checkBoxClipboardMonitor.UseVisualStyleBackColor = true;
             // 
-            // nudConcurrent
+            // btnOpenTaskManage
             // 
-            this.nudConcurrent.Location = new System.Drawing.Point(260, 3);
-            this.nudConcurrent.Name = "nudConcurrent";
-            this.nudConcurrent.Size = new System.Drawing.Size(44, 23);
-            this.nudConcurrent.TabIndex = 10;
+            this.btnOpenTaskManage.AutoSize = true;
+            this.btnOpenTaskManage.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnOpenTaskManage.Image = global::YT4k.Properties.Resources.ListBox;
+            this.btnOpenTaskManage.Location = new System.Drawing.Point(389, 4);
+            this.btnOpenTaskManage.Name = "btnOpenTaskManage";
+            this.btnOpenTaskManage.Size = new System.Drawing.Size(22, 22);
+            this.btnOpenTaskManage.TabIndex = 11;
+            this.btnOpenTaskManage.UseVisualStyleBackColor = true;
+            this.btnOpenTaskManage.Click += new System.EventHandler(this.btnOpenTaskManage_Click);
             // 
             // FrmMain
             // 
@@ -173,9 +187,9 @@
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudConcurrent)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudConcurrent)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -195,5 +209,6 @@
         private ToolTip toolTip1;
         private ComboBox cbCurrVListName;
         private NumericUpDown nudConcurrent;
+        private Button btnOpenTaskManage;
     }
 }
