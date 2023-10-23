@@ -482,6 +482,17 @@ namespace YT4k
                         && DownloadTaskList.Count > 0
                         )
                     {
+                        //磁盘空间
+                        DriveInfo di = new DriveInfo(Directory.GetDirectoryRoot(downloadDir));
+                        //空间低于100M就禁止写入（或改为公共变量注册申请制？？）
+                        if (di.DriveType != DriveType.Network
+                            && di.TotalFreeSpace < 1L * 1024 * 1024 * 1024
+                            )
+                        {
+                            statusLabelMsg.Text = "磁盘空间低于1G，不能启动下载";
+                            break;
+                        }
+
                         string vListName = DownloadTaskList.Keys.First();
                         List<string> fList = DownloadTaskList[vListName];
                         if (fList.Count > 0)
