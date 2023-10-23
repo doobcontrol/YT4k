@@ -37,10 +37,13 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbDeleteTask = new System.Windows.Forms.ToolStripButton();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbVList
@@ -50,7 +53,7 @@
             this.lbVList.ItemHeight = 17;
             this.lbVList.Location = new System.Drawing.Point(0, 25);
             this.lbVList.Name = "lbVList";
-            this.lbVList.Size = new System.Drawing.Size(200, 425);
+            this.lbVList.Size = new System.Drawing.Size(222, 403);
             this.lbVList.TabIndex = 0;
             // 
             // lvTaskList
@@ -58,7 +61,7 @@
             this.lvTaskList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvTaskList.Location = new System.Drawing.Point(0, 25);
             this.lvTaskList.Name = "lvTaskList";
-            this.lvTaskList.Size = new System.Drawing.Size(600, 425);
+            this.lvTaskList.Size = new System.Drawing.Size(578, 403);
             this.lvTaskList.TabIndex = 1;
             this.lvTaskList.UseCompatibleStateImageBehavior = false;
             // 
@@ -69,7 +72,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 450);
+            this.panel1.Size = new System.Drawing.Size(222, 428);
             this.panel1.TabIndex = 2;
             // 
             // toolStrip2
@@ -79,7 +82,7 @@
             this.tsbDeleteList});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(200, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(222, 25);
             this.toolStrip2.TabIndex = 3;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -110,9 +113,9 @@
             this.panel2.Controls.Add(this.lvTaskList);
             this.panel2.Controls.Add(this.toolStrip1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(200, 0);
+            this.panel2.Location = new System.Drawing.Point(222, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(600, 450);
+            this.panel2.Size = new System.Drawing.Size(578, 428);
             this.panel2.TabIndex = 3;
             // 
             // toolStrip1
@@ -121,7 +124,7 @@
             this.tsbDeleteTask});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(600, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(578, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -136,6 +139,22 @@
             this.tsbDeleteTask.ToolTipText = "删除任务";
             this.tsbDeleteTask.Click += new System.EventHandler(this.tsbDeleteTask_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.TabIndex = 4;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
             // FrmTaskList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -143,6 +162,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.statusStrip1);
             this.Name = "FrmTaskList";
             this.Text = "FrmTaskList";
             this.Load += new System.EventHandler(this.FrmTaskList_Load);
@@ -154,7 +174,10 @@
             this.panel2.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -169,5 +192,7 @@
         private Panel panel2;
         private ToolStrip toolStrip1;
         private ToolStripButton tsbDeleteTask;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

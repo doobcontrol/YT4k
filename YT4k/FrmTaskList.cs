@@ -38,12 +38,19 @@ namespace YT4k
             lvTaskList.SelectedIndexChanged += LvTaskList_SelectedIndexChanged;
             lvTaskList.View = System.Windows.Forms.View.List;
 
+            toolStripStatusLabel1.Text = "";
+
             this.FormClosed += FrmTaskList_FormClosed;
         }
 
         private void FrmTaskList_Load(object sender, EventArgs e)
         {
             changeMonitorStatus(true);
+
+            if (selectedList != null)
+            {
+                toolStripStatusLabel1.Text = selectedList.Count + " 项任务";
+            }
         }
 
         private void FrmTaskList_FormClosed(object? sender, FormClosedEventArgs e)
@@ -95,6 +102,8 @@ namespace YT4k
                 {
                     tsbDeleteList.Visible = true;
                 }
+
+                toolStripStatusLabel1.Text = selectedList.Count + " 项任务";
             }
             else
             {
@@ -114,6 +123,8 @@ namespace YT4k
                 selectedList.Add(vID);
                 lvTaskList.Items.Add(vID);
                 taskListChanged = true;
+
+                toolStripStatusLabel1.Text = selectedList.Count + " 项任务";
             }
         }
 
@@ -169,6 +180,8 @@ namespace YT4k
                     lvTaskList.Items.Remove(taskName);
                     selectedList.Remove(taskName.Text);
                 }
+
+                toolStripStatusLabel1.Text = selectedList.Count + " 项任务";
             }
         }
 
