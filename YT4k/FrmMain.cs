@@ -42,7 +42,7 @@ namespace YT4k
             xConfig.setOnePar("starttime",DateTime.Now.ToString("yyyyMMdd-HHmmss"));
 
             appTitle = Application.ProductName + "(V" + Application.ProductVersion.ToString() + ") - ";
-            Text = appTitle + downloadingDic.Count + "项任务";
+            Text = appTitle + getDownloadTaskInfo();
 
             cbCurrVListName.DropDownStyle = ComboBoxStyle.DropDownList;
             toolTip1.SetToolTip(cbCurrVListName, "视频列表");
@@ -207,7 +207,7 @@ namespace YT4k
             }
 
             statusLabelMsg.Text = "任务已添加，总" + downloadingDic.Count + "项";
-            Text = appTitle + downloadingDic.Count + "项任务";
+            Text = appTitle + getDownloadTaskInfo();
 
             log(LogTask.logType_info, "启动任务（" + downloadingDic.Count + "）：" + vUrl, null);
 
@@ -370,7 +370,7 @@ namespace YT4k
                 senderUcYtDownloader.Dispose();
 
                 statusLabelMsg.Text = msg;
-                Text = appTitle + downloadingDic.Count + "项任务";
+                Text = appTitle + getDownloadTaskInfo();
 
                 if (downloadingDic.Count == 0)
                     {
@@ -532,6 +532,8 @@ namespace YT4k
                         cbCurrVListName.Items.Add(defaultListName);
                     }
 
+                    Text = appTitle + getDownloadTaskInfo();
+
                     //重置默认列表选择
                     resetCurrVListName();
 
@@ -556,6 +558,25 @@ namespace YT4k
             {
                 cbCurrVListName.Text = DownloadTaskList.Keys.First();
             }
+        }
+
+        private string getDownloadTaskInfo()
+        {
+            int listCount = 0;
+            int taskCount = 0;
+
+            foreach(List<string> tList in DownloadTaskList.Values)
+            {
+                if (tList.Count > 0)
+                {
+                    listCount++;
+                    taskCount += tList.Count;
+                }
+            }
+
+            return downloadingDic.Count + " 项正在下载，" 
+                + listCount + " 个队列等待中，共" 
+                + taskCount + " 项任务等待中";
         }
 
         #endregion
