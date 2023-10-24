@@ -32,7 +32,7 @@
             this.panelDownloaderContainer = new System.Windows.Forms.Panel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabelMsg = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelToolBar = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOpenRecordFileFold = new System.Windows.Forms.Button();
             this.btnPasteTask = new System.Windows.Forms.Button();
@@ -41,7 +41,7 @@
             this.nudConcurrent = new System.Windows.Forms.NumericUpDown();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.panelToolBar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudConcurrent)).BeginInit();
             this.SuspendLayout();
@@ -71,19 +71,19 @@
             this.statusLabelMsg.Size = new System.Drawing.Size(131, 17);
             this.statusLabelMsg.Text = "toolStripStatusLabel1";
             // 
-            // panel1
+            // panelToolBar
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.btnPasteTask);
-            this.panel1.Controls.Add(this.btnOpenTaskManage);
-            this.panel1.Controls.Add(this.cbCurrVListName);
-            this.panel1.Controls.Add(this.nudConcurrent);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 31);
-            this.panel1.TabIndex = 4;
+            this.panelToolBar.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.panelToolBar.Controls.Add(this.panel2);
+            this.panelToolBar.Controls.Add(this.btnPasteTask);
+            this.panelToolBar.Controls.Add(this.btnOpenTaskManage);
+            this.panelToolBar.Controls.Add(this.cbCurrVListName);
+            this.panelToolBar.Controls.Add(this.nudConcurrent);
+            this.panelToolBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelToolBar.Location = new System.Drawing.Point(0, 0);
+            this.panelToolBar.Name = "panelToolBar";
+            this.panelToolBar.Size = new System.Drawing.Size(800, 31);
+            this.panelToolBar.TabIndex = 4;
             // 
             // panel2
             // 
@@ -152,7 +152,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.panelDownloaderContainer);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelToolBar);
             this.Controls.Add(this.statusStrip1);
             this.Name = "FrmMain";
             this.Text = "FrmMain";
@@ -160,8 +160,8 @@
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.panelToolBar.ResumeLayout(false);
+            this.panelToolBar.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudConcurrent)).EndInit();
@@ -175,7 +175,7 @@
         private Panel panelDownloaderContainer;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel statusLabelMsg;
-        private Panel panel1;
+        private Panel panelToolBar;
         private Button btnOpenRecordFileFold;
         private ToolTip toolTip1;
         private ComboBox cbCurrVListName;

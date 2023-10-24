@@ -232,6 +232,7 @@ namespace YT4k
                     ) == DialogResult.Yes)
                 {
                     this.ControlBox = false;
+                    this.panelToolBar.Visible = false;
                     Text = appTitle + "退出处理中……";
                     statusLabelMsg.Text = "开始退出处理……";
                     log(LogTask.logType_info, "开始退出处理……", null);
