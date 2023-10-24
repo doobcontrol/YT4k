@@ -27,6 +27,8 @@ namespace YT4k
         static string ListParName_startBlock = "startBlock";
         static string ListParName_vFile = "vFile";
 
+        static string ParName_workList = "wl"; //当前等待队列（有多队列时）
+
         static public string downloadDir = "download";
         static public string taskListsDir = "taskLists";
 
@@ -477,6 +479,9 @@ namespace YT4k
                 {
                     inDownloadTaskFromList = true;
 
+                    string workListName = xConfig.getOnePar(ParName_workList);
+                    string vListName;
+
                     while (
                         downloadingDic.Count < nudConcurrent.Value
                         && DownloadTaskList.Count > 0
@@ -493,7 +498,18 @@ namespace YT4k
                             break;
                         }
 
-                        string vListName = DownloadTaskList.Keys.First();
+                        //下载完当前队列再启动新队列
+                        if (workListName != null && DownloadTaskList.ContainsKey(workListName))
+                        {
+                            vListName = workListName;
+                        }
+                        else
+                        {
+                            vListName = DownloadTaskList.Keys.First();
+                            workListName = vListName;
+                            xConfig.setOnePar(ParName_workList, workListName);
+                        }
+
                         List<string> fList = DownloadTaskList[vListName];
                         if (fList.Count > 0)
                         {
