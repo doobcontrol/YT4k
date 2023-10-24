@@ -27,6 +27,12 @@ namespace YT4k
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            if(textBox1.Text == null
+                || textBox1.Text.Trim() == "")
+            {
+                Text = "新下载列表 - 请输入列表名称";
+                return;
+            }
             DialogResult = DialogResult.OK;
         }
 
