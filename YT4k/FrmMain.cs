@@ -134,7 +134,7 @@ namespace YT4k
             {
                 if (downloadingDic.Count >= nudConcurrent.Value)
                 {
-                    addOneDownloadTaskItem(uStr.Split("=")[1], cbCurrVListName.Text);
+                    addOneDownloadTaskItem(uStr.Split("=")[1].Split("&")[0], cbCurrVListName.Text);
                 }
                 else
                 {

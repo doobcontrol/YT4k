@@ -117,7 +117,7 @@ namespace YT4k
         List<string> selectedList;
         private void addOneTask(string vUri)
         {
-            string vID = vUri.Split("=")[1];
+            string vID = vUri.Split("=")[1].Split("&")[0];
             if (selectedList != null && !selectedList.Contains(vID))
             {
                 selectedList.Add(vID);
