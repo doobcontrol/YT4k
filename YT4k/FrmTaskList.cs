@@ -223,7 +223,7 @@ namespace YT4k
             }
             changeMonitorStatus(false);
             string ClipboardString = ((ClipboardMonitor)sender).ClipboardString;
-            if (FrmMain.checkYoutubeUri(ClipboardString))
+            if (ClipboardString != null && FrmMain.checkYoutubeUri(ClipboardString))
             {
                 addOneTask(ClipboardString);
             }

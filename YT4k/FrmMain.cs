@@ -149,6 +149,11 @@ namespace YT4k
 
         static public bool checkYoutubeUri(string uStr)
         {
+            if (uStr == null)
+            {
+                return false;
+            }
+
             string vUrl = uStr;
             if (uStr.IndexOf('&') != -1)
             {
