@@ -368,14 +368,14 @@ namespace YT4k
                         case pogressMsgType.show:
                             labelPogress.Text = ((value == 0) ? ("双击取消下载") : (string.Format("{0:n0}", value))) + "  (双击取消下载)";
                             panelPogress.Visible = true;
-                            progressBar1.Maximum = 100;
+                            progressBar1.Maximum = 10000;
                             progressBar1.Value = 0;
                             progressBar1.Tag = value;
                             break;
                         case pogressMsgType.progress:
                             labelPogress.Text = string.Format("{0:n0}", value) + "/"
                                 + string.Format("{0:n0}", (long)progressBar1.Tag) + " (双击取消下载)";
-                            var percent = (int)(value * 100 / (long)progressBar1.Tag);
+                            var percent = (int)((((decimal)value) / (long)progressBar1.Tag) * 10000);
                             progressBar1.Value = percent;
                             break;
                         case pogressMsgType.hide:

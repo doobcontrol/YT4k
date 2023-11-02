@@ -47,7 +47,7 @@
             this.panelPogress.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelPogress.Location = new System.Drawing.Point(0, 66);
             this.panelPogress.Name = "panelPogress";
-            this.panelPogress.Size = new System.Drawing.Size(849, 29);
+            this.panelPogress.Size = new System.Drawing.Size(849, 25);
             this.panelPogress.TabIndex = 3;
             // 
             // labelPogress
@@ -65,7 +65,7 @@
             this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.progressBar1.Location = new System.Drawing.Point(0, 23);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(849, 6);
+            this.progressBar1.Size = new System.Drawing.Size(849, 2);
             this.progressBar1.TabIndex = 4;
             // 
             // labelVedioUri
@@ -104,7 +104,7 @@
             this.Controls.Add(this.labelVedioUri);
             this.Controls.Add(this.panelPogress);
             this.Name = "UcYtDownloader";
-            this.Size = new System.Drawing.Size(849, 95);
+            this.Size = new System.Drawing.Size(849, 91);
             this.panelPogress.ResumeLayout(false);
             this.ResumeLayout(false);
 
