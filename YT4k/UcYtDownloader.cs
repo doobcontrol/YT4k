@@ -345,49 +345,60 @@ namespace YT4k
             {
                 return;
             }
-            if (panelPogress.InvokeRequired)
+
+            try
             {
-                try
+                if (panelPogress.InvokeRequired)
                 {
-                    panelPogress.Invoke(() => {  //BeginInvoke debug:看是否能解决长时大量任务下的失去响应问题
-                        showPogress(pmt, value);
-                        }
-                    );
-                }
-                catch (InvalidOperationException e)
-                {
-                    //控件已删除，不处理
-                }
-            }
-            else
-            {
-                try
-                {
-                    switch (pmt)
+                    try
                     {
-                        case pogressMsgType.show:
-                            labelPogress.Text = ((value == 0) ? ("双击取消下载") : (string.Format("{0:n0}", value))) + "  (双击取消下载)";
-                            panelPogress.Visible = true;
-                            progressBar1.Maximum = 10000;
-                            progressBar1.Value = 0;
-                            progressBar1.Tag = value;
-                            break;
-                        case pogressMsgType.progress:
-                            labelPogress.Text = string.Format("{0:n0}", value) + "/"
-                                + string.Format("{0:n0}", (long)progressBar1.Tag) + " (双击取消下载)";
-                            var percent = (int)((((decimal)value) / (long)progressBar1.Tag) * 10000);
-                            progressBar1.Value = percent;
-                            break;
-                        case pogressMsgType.hide:
-                            //panelPogress.Visible = false;
-                            break;
+                        panelPogress.Invoke(() => {  //BeginInvoke debug:看是否能解决长时大量任务下的失去响应问题
+                            showPogress(pmt, value);
+                        }
+                        );
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        //控件已删除，不处理
+                        FrmMain.log(LogTask.logType_erro,
+                            "进度条失败(Invoke)", e);
                     }
                 }
-                catch(Exception e)
+                else
                 {
-                    FrmMain.log(LogTask.logType_erro, 
-                        "进度条失败("+ value + "/"+ progressBar1.Tag + ")：", e);
+                    try
+                    {
+                        switch (pmt)
+                        {
+                            case pogressMsgType.show:
+                                labelPogress.Text = ((value == 0) ? ("双击取消下载") : (string.Format("{0:n0}", value))) + "  (双击取消下载)";
+                                panelPogress.Visible = true;
+                                progressBar1.Maximum = 10000;
+                                progressBar1.Value = 0;
+                                progressBar1.Tag = value;
+                                break;
+                            case pogressMsgType.progress:
+                                labelPogress.Text = string.Format("{0:n0}", value) + "/"
+                                    + string.Format("{0:n0}", (long)progressBar1.Tag) + " (双击取消下载)";
+                                var percent = (int)((((decimal)value) / (long)progressBar1.Tag) * 10000);
+                                progressBar1.Value = percent;
+                                break;
+                            case pogressMsgType.hide:
+                                //panelPogress.Visible = false;
+                                break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        FrmMain.log(LogTask.logType_erro,
+                            "进度条失败(" + value + "/" + progressBar1.Tag + ")：", e);
+                    }
                 }
+            }
+            catch (Exception OuterE)
+            {
+                FrmMain.log(LogTask.logType_erro,
+                    "进度条失败", OuterE);
             }
         }
 
