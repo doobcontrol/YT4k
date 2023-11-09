@@ -239,7 +239,8 @@ namespace YT4k
                         dsea.Success = false;
                         dsea.e = e;
                     }
-                    showPogress(pogressMsgType.hide, 0);
+
+                    removed = true;
 
                     _ = Task.Run(
                        () =>

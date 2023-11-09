@@ -13,9 +13,12 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            youTube.ChunkDownloaded -= youTube_ChunkDownloaded;
-            youTube.dUriGeter -= getDownloadUriAsync;
-            youTube = null;
+            if (youTube != null)
+            {
+                youTube.ChunkDownloaded -= youTube_ChunkDownloaded;
+                youTube.dUriGeter -= getDownloadUriAsync;
+                youTube = null;
+            }
             if (disposing && (components != null))
             {
                 components.Dispose();
