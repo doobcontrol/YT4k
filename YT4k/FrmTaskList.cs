@@ -116,6 +116,7 @@ namespace YT4k
                 }
 
                 toolStripStatusLabel1.Text = selectedList.Count + " 项任务";
+                Clipboard.SetDataObject(lbVList.SelectedItem.ToString());
             }
             else
             {
