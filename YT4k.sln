@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.xiyuansoft.xyConfig", "..\com.xiyuansoft\xyConfig\com.xiyuansoft.xyConfig\com.xiyuansoft.xyConfig.csproj", "{DDC288B6-7BF6-4ED1-BAE9-33FD0B6208E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.xiyuansoft.pub.log", "..\com.xiyuansoft\pub\XYLogger\com.xiyuansoft.pub.log\com.xiyuansoft.pub.log.csproj", "{32B719A6-8C3B-4EE6-91E5-CD1C61B0E147}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.xiyuansoft.pub.log", "..\com.xiyuansoft\XYLogger\com.xiyuansoft.pub.log\com.xiyuansoft.pub.log.csproj", "{32B719A6-8C3B-4EE6-91E5-CD1C61B0E147}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
