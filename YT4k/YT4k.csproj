@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\com.xiyuansoft\pub\XYLogger\com.xiyuansoft.pub.log\com.xiyuansoft.pub.log.csproj" />
     <ProjectReference Include="..\..\com.xiyuansoft\xyConfig\com.xiyuansoft.xyConfig\com.xiyuansoft.xyConfig.csproj" />
+    <ProjectReference Include="..\..\com.xiyuansoft\XYLogger\com.xiyuansoft.pub.log\com.xiyuansoft.pub.log.csproj" />
   </ItemGroup>
 
   <ItemGroup>
