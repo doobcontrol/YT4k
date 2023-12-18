@@ -24,6 +24,7 @@ namespace YT4k
 
             tsbDeleteTask.Visible = false;
             tsbDeleteList.Visible = false;
+            tsbSearch.Visible = false;
 
             foreach (string listName in FrmMain.DownloadTaskList.Keys)
             {
@@ -71,6 +72,17 @@ namespace YT4k
             else
             {
                 tsbDeleteTask.Visible = true;
+
+                string itemString = "";
+                foreach (ListViewItem taskName in lvTaskList.SelectedItems)
+                {
+                    if (itemString != "")
+                    {
+                        itemString += ",";
+                    }
+                    itemString += taskName.Text;
+                }
+                Clipboard.SetDataObject(itemString);
             }
         }
 
@@ -81,7 +93,7 @@ namespace YT4k
 
             if (taskListChanged)
             {
-                FrmMain.saveDownloadTaskList(selectedListName, selectedList); 
+                FrmMain.saveDownloadTaskList(selectedListName, selectedList);
                 taskListChanged = false;
             }
             if (lbVList.SelectedItem != null)
@@ -175,13 +187,44 @@ namespace YT4k
             {
                 taskListChanged = true;
 
-                foreach(ListViewItem taskName in lvTaskList.SelectedItems)
+                foreach (ListViewItem taskName in lvTaskList.SelectedItems)
                 {
                     lvTaskList.Items.Remove(taskName);
                     selectedList.Remove(taskName.Text);
                 }
 
                 toolStripStatusLabel1.Text = selectedList.Count + " 项任务";
+            }
+        }
+
+        private void tsbSearch_Click(object sender, EventArgs e)
+        {
+            if (txtSearch.TextBox.Text != null
+                && txtSearch.TextBox.Text != "")
+            {
+                ListViewItem searchedItem =
+                lvTaskList.FindItemWithText(txtSearch.TextBox.Text);
+                
+                lvTaskList.SelectedItems.Clear();
+
+                if (searchedItem != null)
+                {
+                    searchedItem.Selected = true;
+                    lvTaskList.Focus();
+                }
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (txtSearch.TextBox.Text != null
+                && txtSearch.TextBox.Text != "")
+            {
+                tsbSearch.Visible = true;
+            }
+            else
+            {
+                tsbSearch.Visible = false;
             }
         }
 
