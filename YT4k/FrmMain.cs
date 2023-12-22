@@ -27,7 +27,7 @@ namespace YT4k
         static string ListParName_startBlock = "startBlock";
         static string ListParName_vFile = "vFile";
 
-        static string ParName_workList = "wl"; //当前等待队列（有多队列时）
+        public static string ParName_workList = "wl"; //当前等待队列（有多队列时）
 
         static public string downloadDir = "download";
         static public string taskListsDir = "taskLists";

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using com.xiyuansoft.xyConfig;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,12 +27,22 @@ namespace YT4k
             tsbDeleteList.Visible = false;
             tsbSearch.Visible = false;
 
+            string workListName = xConfig.getOnePar(FrmMain.ParName_workList);
+            string selectListName = null;
             foreach (string listName in FrmMain.DownloadTaskList.Keys)
             {
+                if (workListName == listName)
+                {
+                    selectListName = workListName;
+                }
                 lbVList.Items.Add(listName);
             }
             lbVList.SelectedIndexChanged += LbVList_SelectedIndexChanged;
-            if (lbVList.Items.Count > 0)
+            if (selectListName != null)
+            {
+                lbVList.SelectedItem = selectListName;
+            }
+            else if (lbVList.Items.Count > 0)
             {
                 lbVList.SelectedIndex = 0;
             }
