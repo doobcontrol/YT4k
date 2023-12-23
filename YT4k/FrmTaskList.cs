@@ -26,6 +26,8 @@ namespace YT4k
             tsbDeleteTask.Visible = false;
             tsbDeleteList.Visible = false;
             tsbSearch.Visible = false;
+            tsbSetCurrentList.Visible = false;
+            tsbSetNextList.Visible = false;
 
             string workListName = xConfig.getOnePar(FrmMain.ParName_workList);
             string selectListName = null;
@@ -124,6 +126,36 @@ namespace YT4k
                 else
                 {
                     tsbDeleteList.Visible = true;
+
+                    string nextWorkListName = xConfig.getOnePar(FrmMain.ParName_nextWorkList);
+                    string workListName = xConfig.getOnePar(FrmMain.ParName_workList);
+
+                    if (lbVList.SelectedItem.ToString() != workListName)
+                    {
+                        tsbSetCurrentList.ToolTipText =
+                            "设置当前下载列表："
+                            + workListName + " -> "
+                            + lbVList.SelectedItem.ToString();
+                        tsbSetCurrentList.Visible = true;
+                    }
+                    else
+                    {
+                        tsbSetCurrentList.Visible = false;
+                    }
+
+                    if (lbVList.SelectedItem.ToString() != workListName
+                        && lbVList.SelectedItem.ToString() != nextWorkListName)
+                    {
+                        tsbSetNextList.ToolTipText =
+                            "设置下一下载列表："
+                            + nextWorkListName + " -> "
+                            + lbVList.SelectedItem.ToString();
+                        tsbSetNextList.Visible = true;
+                    }
+                    else
+                    {
+                        tsbSetNextList.Visible = false;
+                    }
                 }
 
                 toolStripStatusLabel1.Text = selectedList.Count + " 项任务";
@@ -134,6 +166,8 @@ namespace YT4k
                 taskListChanged = false;
 
                 tsbDeleteList.Visible = false;
+                tsbSetCurrentList.Visible = false;
+                tsbSetNextList.Visible = false;
             }
         }
 
@@ -216,7 +250,7 @@ namespace YT4k
             {
                 ListViewItem searchedItem =
                 lvTaskList.FindItemWithText(txtSearch.TextBox.Text);
-                
+
                 lvTaskList.SelectedItems.Clear();
 
                 if (searchedItem != null)
@@ -238,6 +272,29 @@ namespace YT4k
             {
                 tsbSearch.Visible = false;
             }
+        }
+
+        private void tsbSetCurrentList_Click(object sender, EventArgs e)
+        {
+            xConfig.setOnePar(FrmMain.ParName_workList,
+                lbVList.SelectedItem.ToString());
+
+            string nextWorkListName = xConfig.getOnePar(FrmMain.ParName_nextWorkList);
+            if(lbVList.SelectedItem.ToString() == nextWorkListName)
+            {
+                xConfig.setOnePar(FrmMain.ParName_nextWorkList, "");
+            }
+
+            tsbSetCurrentList.Visible = false;
+            tsbSetNextList.Visible = false;
+        }
+
+        private void tsbSetNextList_Click(object sender, EventArgs e)
+        {
+            xConfig.setOnePar(FrmMain.ParName_nextWorkList,
+                lbVList.SelectedItem.ToString());
+
+            tsbSetNextList.Visible = false;
         }
 
         #region 监视剪贴板

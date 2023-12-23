@@ -28,6 +28,7 @@ namespace YT4k
         static string ListParName_vFile = "vFile";
 
         public static string ParName_workList = "wl"; //当前等待队列（有多队列时）
+        public static string ParName_nextWorkList = "nwl"; //下一等待队列（有多队列时）
 
         static public string downloadDir = "download";
         static public string taskListsDir = "taskLists";
@@ -41,7 +42,8 @@ namespace YT4k
             //临时解决方案，避免后续写的时候出被写保护错，导致保存的下载断点不一至（需要在xConfig库解决）
             xConfig.setOnePar("starttime",DateTime.Now.ToString("yyyyMMdd-HHmmss"));
 
-            appTitle = Application.ProductName + "(V" + Application.ProductVersion.ToString() + ") - ";
+            appTitle = Application.ProductName + "(V" 
+                + Application.ProductVersion.Split("+")[0] + ") - ";
             Text = appTitle + getDownloadTaskInfo();
 
             cbCurrVListName.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -61,11 +63,18 @@ namespace YT4k
 
             statusLabelMsg.Text = "";
 
-            statusLabelMsg.Spring = true; //内容过长时不会消失。但会剧中，因此有下行代码
-            statusLabelMsg.TextAlign = ContentAlignment.MiddleLeft; 
-            
+            //statusLabelMsg.Spring = true; //内容过长时不会消失。但会剧中，因此有下行代码
+            statusLabelMsg.TextAlign = ContentAlignment.MiddleLeft;
+
+            toolStripStatusLabel1.Text = "";
+            tsslCurrentList.AutoSize = false;
+            tsslNextList.AutoSize = false;
+            statusStrip1.ShowItemToolTips = true;
+
             this.StartPosition = FormStartPosition.Manual;
             getFormPars(this);
+
+            showDListInfo();
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -125,6 +134,8 @@ namespace YT4k
             resetCurrVListName();
 
             startDownloadTaskFromList();
+
+            showDListInfo();
         }
 
         private void btnPasteTask_Click(object sender, EventArgs e)
@@ -485,7 +496,6 @@ namespace YT4k
                     inDownloadTaskFromList = true;
 
                     string workListName = xConfig.getOnePar(ParName_workList);
-                    string vListName;
 
                     while (
                         downloadingDic.Count < nudConcurrent.Value
@@ -503,6 +513,7 @@ namespace YT4k
                             break;
                         }
 
+                        string vListName;
                         //下载完当前队列再启动新队列
                         if (workListName != null && DownloadTaskList.ContainsKey(workListName))
                         {
@@ -510,9 +521,19 @@ namespace YT4k
                         }
                         else
                         {
-                            vListName = DownloadTaskList.Keys.First();
+                            vListName = xConfig.getOnePar(ParName_nextWorkList);
+                            if(vListName != null && vListName != "")
+                            {
+                                xConfig.setOnePar(ParName_nextWorkList, "");
+                            }
+                            else
+                            {
+                                vListName = DownloadTaskList.Keys.First();
+                            }
+
                             workListName = vListName;
                             xConfig.setOnePar(ParName_workList, workListName);
+                            showDListInfo();
                         }
 
                         List<string> fList = DownloadTaskList[vListName];
@@ -582,6 +603,16 @@ namespace YT4k
             return downloadingDic.Count + " 项正在下载，" 
                 + listCount + " 个队列等待中，共" 
                 + taskCount + " 项任务等待中";
+        }
+
+        private void showDListInfo()
+        {
+            string workListName = xConfig.getOnePar(ParName_workList);
+            tsslCurrentList.Text = workListName;
+            tsslCurrentList.ToolTipText = "当前列表：" + workListName;
+            string nextWorkListName = xConfig.getOnePar(ParName_nextWorkList);
+            tsslNextList.Text = nextWorkListName;
+            tsslNextList.ToolTipText = "下一列表：" + nextWorkListName;
         }
 
         #endregion

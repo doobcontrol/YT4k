@@ -28,146 +28,170 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.panelDownloaderContainer = new System.Windows.Forms.Panel();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.statusLabelMsg = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panelToolBar = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.btnOpenRecordFileFold = new System.Windows.Forms.Button();
-            this.btnPasteTask = new System.Windows.Forms.Button();
-            this.btnOpenTaskManage = new System.Windows.Forms.Button();
-            this.cbCurrVListName = new System.Windows.Forms.ComboBox();
-            this.nudConcurrent = new System.Windows.Forms.NumericUpDown();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.statusStrip1.SuspendLayout();
-            this.panelToolBar.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudConcurrent)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            panelDownloaderContainer = new Panel();
+            statusStrip1 = new StatusStrip();
+            statusLabelMsg = new ToolStripStatusLabel();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            tsslCurrentList = new ToolStripStatusLabel();
+            tsslNextList = new ToolStripStatusLabel();
+            panelToolBar = new Panel();
+            panel2 = new Panel();
+            btnOpenRecordFileFold = new Button();
+            btnPasteTask = new Button();
+            btnOpenTaskManage = new Button();
+            cbCurrVListName = new ComboBox();
+            nudConcurrent = new NumericUpDown();
+            toolTip1 = new ToolTip(components);
+            statusStrip1.SuspendLayout();
+            panelToolBar.SuspendLayout();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudConcurrent).BeginInit();
+            SuspendLayout();
             // 
             // panelDownloaderContainer
             // 
-            this.panelDownloaderContainer.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panelDownloaderContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDownloaderContainer.Location = new System.Drawing.Point(0, 31);
-            this.panelDownloaderContainer.Name = "panelDownloaderContainer";
-            this.panelDownloaderContainer.Size = new System.Drawing.Size(800, 397);
-            this.panelDownloaderContainer.TabIndex = 0;
+            panelDownloaderContainer.BackColor = SystemColors.ControlDark;
+            panelDownloaderContainer.Dock = DockStyle.Fill;
+            panelDownloaderContainer.Location = new Point(0, 31);
+            panelDownloaderContainer.Name = "panelDownloaderContainer";
+            panelDownloaderContainer.Size = new Size(800, 397);
+            panelDownloaderContainer.TabIndex = 0;
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabelMsg});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
+            statusStrip1.Items.AddRange(new ToolStripItem[] { statusLabelMsg, toolStripStatusLabel1, tsslCurrentList, tsslNextList });
+            statusStrip1.Location = new Point(0, 428);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(800, 22);
+            statusStrip1.TabIndex = 3;
+            statusStrip1.Text = "statusStrip1";
             // 
             // statusLabelMsg
             // 
-            this.statusLabelMsg.Name = "statusLabelMsg";
-            this.statusLabelMsg.Size = new System.Drawing.Size(131, 17);
-            this.statusLabelMsg.Text = "toolStripStatusLabel1";
+            statusLabelMsg.Name = "statusLabelMsg";
+            statusLabelMsg.Size = new Size(131, 17);
+            statusLabelMsg.Text = "toolStripStatusLabel1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.AutoSize = false;
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.RightToLeft = RightToLeft.No;
+            toolStripStatusLabel1.Size = new Size(392, 17);
+            toolStripStatusLabel1.Spring = true;
+            toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
+            // tsslCurrentList
+            // 
+            tsslCurrentList.Name = "tsslCurrentList";
+            tsslCurrentList.Size = new Size(131, 17);
+            tsslCurrentList.Text = "toolStripStatusLabel2";
+            tsslCurrentList.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // tsslNextList
+            // 
+            tsslNextList.Name = "tsslNextList";
+            tsslNextList.Size = new Size(131, 17);
+            tsslNextList.Text = "toolStripStatusLabel3";
+            tsslNextList.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // panelToolBar
             // 
-            this.panelToolBar.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.panelToolBar.Controls.Add(this.panel2);
-            this.panelToolBar.Controls.Add(this.btnPasteTask);
-            this.panelToolBar.Controls.Add(this.btnOpenTaskManage);
-            this.panelToolBar.Controls.Add(this.cbCurrVListName);
-            this.panelToolBar.Controls.Add(this.nudConcurrent);
-            this.panelToolBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelToolBar.Location = new System.Drawing.Point(0, 0);
-            this.panelToolBar.Name = "panelToolBar";
-            this.panelToolBar.Size = new System.Drawing.Size(800, 31);
-            this.panelToolBar.TabIndex = 4;
+            panelToolBar.BackColor = SystemColors.GradientInactiveCaption;
+            panelToolBar.Controls.Add(panel2);
+            panelToolBar.Controls.Add(btnPasteTask);
+            panelToolBar.Controls.Add(btnOpenTaskManage);
+            panelToolBar.Controls.Add(cbCurrVListName);
+            panelToolBar.Controls.Add(nudConcurrent);
+            panelToolBar.Dock = DockStyle.Top;
+            panelToolBar.Location = new Point(0, 0);
+            panelToolBar.Name = "panelToolBar";
+            panelToolBar.Size = new Size(800, 31);
+            panelToolBar.TabIndex = 4;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.btnOpenRecordFileFold);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(769, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(31, 31);
-            this.panel2.TabIndex = 13;
+            panel2.Controls.Add(btnOpenRecordFileFold);
+            panel2.Dock = DockStyle.Right;
+            panel2.Location = new Point(769, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(31, 31);
+            panel2.TabIndex = 13;
             // 
             // btnOpenRecordFileFold
             // 
-            this.btnOpenRecordFileFold.AutoSize = true;
-            this.btnOpenRecordFileFold.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnOpenRecordFileFold.Image = global::YT4k.Properties.Resources.FolderOpenLightBlue;
-            this.btnOpenRecordFileFold.Location = new System.Drawing.Point(3, 3);
-            this.btnOpenRecordFileFold.Name = "btnOpenRecordFileFold";
-            this.btnOpenRecordFileFold.Size = new System.Drawing.Size(22, 22);
-            this.btnOpenRecordFileFold.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.btnOpenRecordFileFold, "打开下载文件目录");
-            this.btnOpenRecordFileFold.UseVisualStyleBackColor = true;
-            this.btnOpenRecordFileFold.Click += new System.EventHandler(this.btnOpenRecordFileFold_Click);
+            btnOpenRecordFileFold.AutoSize = true;
+            btnOpenRecordFileFold.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnOpenRecordFileFold.Image = Properties.Resources.FolderOpenLightBlue;
+            btnOpenRecordFileFold.Location = new Point(3, 3);
+            btnOpenRecordFileFold.Name = "btnOpenRecordFileFold";
+            btnOpenRecordFileFold.Size = new Size(22, 22);
+            btnOpenRecordFileFold.TabIndex = 7;
+            toolTip1.SetToolTip(btnOpenRecordFileFold, "打开下载文件目录");
+            btnOpenRecordFileFold.UseVisualStyleBackColor = true;
+            btnOpenRecordFileFold.Click += btnOpenRecordFileFold_Click;
             // 
             // btnPasteTask
             // 
-            this.btnPasteTask.AutoSize = true;
-            this.btnPasteTask.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnPasteTask.Image = global::YT4k.Properties.Resources.Paste;
-            this.btnPasteTask.Location = new System.Drawing.Point(208, 4);
-            this.btnPasteTask.Name = "btnPasteTask";
-            this.btnPasteTask.Size = new System.Drawing.Size(22, 22);
-            this.btnPasteTask.TabIndex = 12;
-            this.btnPasteTask.UseVisualStyleBackColor = true;
-            this.btnPasteTask.Click += new System.EventHandler(this.btnPasteTask_Click);
+            btnPasteTask.AutoSize = true;
+            btnPasteTask.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnPasteTask.Image = Properties.Resources.Paste;
+            btnPasteTask.Location = new Point(208, 4);
+            btnPasteTask.Name = "btnPasteTask";
+            btnPasteTask.Size = new Size(22, 22);
+            btnPasteTask.TabIndex = 12;
+            btnPasteTask.UseVisualStyleBackColor = true;
+            btnPasteTask.Click += btnPasteTask_Click;
             // 
             // btnOpenTaskManage
             // 
-            this.btnOpenTaskManage.AutoSize = true;
-            this.btnOpenTaskManage.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnOpenTaskManage.Image = global::YT4k.Properties.Resources.ListBox;
-            this.btnOpenTaskManage.Location = new System.Drawing.Point(180, 4);
-            this.btnOpenTaskManage.Name = "btnOpenTaskManage";
-            this.btnOpenTaskManage.Size = new System.Drawing.Size(22, 22);
-            this.btnOpenTaskManage.TabIndex = 11;
-            this.btnOpenTaskManage.UseVisualStyleBackColor = true;
-            this.btnOpenTaskManage.Click += new System.EventHandler(this.btnOpenTaskManage_Click);
+            btnOpenTaskManage.AutoSize = true;
+            btnOpenTaskManage.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnOpenTaskManage.Image = Properties.Resources.ListBox;
+            btnOpenTaskManage.Location = new Point(180, 4);
+            btnOpenTaskManage.Name = "btnOpenTaskManage";
+            btnOpenTaskManage.Size = new Size(22, 22);
+            btnOpenTaskManage.TabIndex = 11;
+            btnOpenTaskManage.UseVisualStyleBackColor = true;
+            btnOpenTaskManage.Click += btnOpenTaskManage_Click;
             // 
             // cbCurrVListName
             // 
-            this.cbCurrVListName.FormattingEnabled = true;
-            this.cbCurrVListName.Location = new System.Drawing.Point(3, 3);
-            this.cbCurrVListName.Name = "cbCurrVListName";
-            this.cbCurrVListName.Size = new System.Drawing.Size(121, 25);
-            this.cbCurrVListName.TabIndex = 9;
+            cbCurrVListName.FormattingEnabled = true;
+            cbCurrVListName.Location = new Point(3, 3);
+            cbCurrVListName.Name = "cbCurrVListName";
+            cbCurrVListName.Size = new Size(121, 25);
+            cbCurrVListName.TabIndex = 9;
             // 
             // nudConcurrent
             // 
-            this.nudConcurrent.Location = new System.Drawing.Point(130, 4);
-            this.nudConcurrent.Name = "nudConcurrent";
-            this.nudConcurrent.Size = new System.Drawing.Size(44, 23);
-            this.nudConcurrent.TabIndex = 10;
+            nudConcurrent.Location = new Point(130, 4);
+            nudConcurrent.Name = "nudConcurrent";
+            nudConcurrent.Size = new Size(44, 23);
+            nudConcurrent.TabIndex = 10;
             // 
             // FrmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.panelDownloaderContainer);
-            this.Controls.Add(this.panelToolBar);
-            this.Controls.Add(this.statusStrip1);
-            this.Name = "FrmMain";
-            this.Text = "FrmMain";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosingAsync);
-            this.Load += new System.EventHandler(this.FrmMain_Load);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            this.panelToolBar.ResumeLayout(false);
-            this.panelToolBar.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudConcurrent)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(panelDownloaderContainer);
+            Controls.Add(panelToolBar);
+            Controls.Add(statusStrip1);
+            Name = "FrmMain";
+            Text = "FrmMain";
+            FormClosing += FrmMain_FormClosingAsync;
+            Load += FrmMain_Load;
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            panelToolBar.ResumeLayout(false);
+            panelToolBar.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudConcurrent).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -183,5 +207,8 @@
         private Button btnOpenTaskManage;
         private Button btnPasteTask;
         private Panel panel2;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolStripStatusLabel tsslCurrentList;
+        private ToolStripStatusLabel tsslNextList;
     }
 }

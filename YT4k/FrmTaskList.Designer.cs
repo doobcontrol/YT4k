@@ -35,6 +35,8 @@
             toolStrip2 = new ToolStrip();
             tsbAddList = new ToolStripButton();
             tsbDeleteList = new ToolStripButton();
+            tsbSetCurrentList = new ToolStripButton();
+            tsbSetNextList = new ToolStripButton();
             panel2 = new Panel();
             toolStrip1 = new ToolStrip();
             tsbDeleteTask = new ToolStripButton();
@@ -80,7 +82,7 @@
             // 
             // toolStrip2
             // 
-            toolStrip2.Items.AddRange(new ToolStripItem[] { tsbAddList, tsbDeleteList });
+            toolStrip2.Items.AddRange(new ToolStripItem[] { tsbAddList, tsbDeleteList, tsbSetCurrentList, tsbSetNextList });
             toolStrip2.Location = new Point(0, 0);
             toolStrip2.Name = "toolStrip2";
             toolStrip2.Size = new Size(222, 25);
@@ -108,6 +110,28 @@
             tsbDeleteList.Text = "toolStripButton2";
             tsbDeleteList.ToolTipText = "删除列表";
             tsbDeleteList.Click += tsbDeleteList_Click;
+            // 
+            // tsbSetCurrentList
+            // 
+            tsbSetCurrentList.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbSetCurrentList.Image = (Image)resources.GetObject("tsbSetCurrentList.Image");
+            tsbSetCurrentList.ImageTransparentColor = Color.Magenta;
+            tsbSetCurrentList.Name = "tsbSetCurrentList";
+            tsbSetCurrentList.Size = new Size(23, 22);
+            tsbSetCurrentList.Text = "toolStripButton2";
+            tsbSetCurrentList.ToolTipText = "删除列表";
+            tsbSetCurrentList.Click += tsbSetCurrentList_Click;
+            // 
+            // tsbSetNextList
+            // 
+            tsbSetNextList.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbSetNextList.Image = (Image)resources.GetObject("tsbSetNextList.Image");
+            tsbSetNextList.ImageTransparentColor = Color.Magenta;
+            tsbSetNextList.Name = "tsbSetNextList";
+            tsbSetNextList.Size = new Size(23, 22);
+            tsbSetNextList.Text = "toolStripButton2";
+            tsbSetNextList.ToolTipText = "删除列表";
+            tsbSetNextList.Click += tsbSetNextList_Click;
             // 
             // panel2
             // 
@@ -211,5 +235,7 @@
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ToolStripTextBox txtSearch;
         private ToolStripButton tsbSearch;
+        private ToolStripButton tsbSetCurrentList;
+        private ToolStripButton tsbSetNextList;
     }
 }
